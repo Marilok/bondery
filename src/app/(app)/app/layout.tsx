@@ -1,54 +1,37 @@
-"use client";
+import { AppShell, AppShellMain, AppShellNavbar } from "@mantine/core";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { NavigationSidebarContent } from "@/components/NavigationSidebar";
 
-import {
-  AppShell,
-  Avatar,
-  Group,
-  Text,
-  Stack,
-  NavLink,
-  Box,
-} from "@mantine/core";
-import {
-  IconUsers,
-  IconSettings,
-  IconTopologyFull,
-  IconChartDots3,
-  IconMap,
-} from "@tabler/icons-react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+async function getUserData() {
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const [userName, setUserName] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        const response = await fetch("/api/account");
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-          const user = result.data;
-          const firstName = user.user_metadata?.name || "";
-          const middleName = user.user_metadata?.middlename || "";
-          const lastName = user.user_metadata?.surname || "";
-          const fullName = [firstName, middleName, lastName]
-            .filter(Boolean)
-            .join(" ");
-          setUserName(fullName || user.email || "User");
-          setAvatarUrl(user.user_metadata?.avatar_url || null);
-        }
-      } catch (error) {
-        console.error("Failed to load user data:", error);
-      }
+  if (!user) {
+    return {
+      userName: "User",
+      avatarUrl: null,
     };
+  }
 
-    loadUserData();
-  }, []);
+  const firstName = user.user_metadata?.name || "";
+  const middleName = user.user_metadata?.middlename || "";
+  const lastName = user.user_metadata?.surname || "";
+  const fullName = [firstName, middleName, lastName].filter(Boolean).join(" ");
+
+  return {
+    userName: fullName || user.email || "User",
+    avatarUrl: user.user_metadata?.avatar_url || null,
+  };
+}
+
+export default async function AppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { userName, avatarUrl } = await getUserData();
 
   return (
     <AppShell
@@ -58,83 +41,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         breakpoint: "sm",
       }}
     >
-      <AppShell.Navbar p="md">
-        <AppShell.Section>
-          {/* Branding Card */}
-          <Group mb="md">
-            <Avatar
-              src={null}
-              alt="Bondee logo"
-              color="violet"
-              radius="xl"
-              size="md"
-            >
-              B
-            </Avatar>
-            <Box style={{ flex: 1 }}>
-              <Text size="sm" fw={600}>
-                Bondee
-              </Text>
-              <Text size="xs" c="dimmed">
-                Build bonds that last
-              </Text>
-            </Box>
-          </Group>
-        </AppShell.Section>
-
-        <AppShell.Section grow>
-          {/* Navigation Links */}
-          <Stack gap="xs">
-            <NavLink
-              component={Link}
-              href="/app/relationships"
-              label="Relationships"
-              leftSection={<IconTopologyFull size={20} stroke={1.5} />}
-              active={pathname === "/app/relationships"}
-            />
-            <NavLink
-              component={Link}
-              href="/app/network"
-              label="Network Graph"
-              leftSection={<IconChartDots3 size={20} stroke={1.5} />}
-              active={pathname === "/app/network"}
-            />
-            <NavLink
-              component={Link}
-              href="/app/map"
-              label="Map"
-              leftSection={<IconMap size={20} stroke={1.5} />}
-              active={pathname === "/app/map"}
-            />
-            <NavLink
-              component={Link}
-              href="/app/settings"
-              label="Settings"
-              leftSection={<IconSettings size={20} stroke={1.5} />}
-              active={pathname === "/app/settings"}
-            />
-          </Stack>
-        </AppShell.Section>
-
-        <AppShell.Section>
-          {/* User Avatar Card */}
-          <Group>
-            <Avatar
-              src={avatarUrl}
-              alt="User avatar"
-              color="blue"
-              radius="xl"
-              size="md"
-              name={userName}
-            />
-            <Text size="sm" fw={500}>
-              {userName}
-            </Text>
-          </Group>
-        </AppShell.Section>
-      </AppShell.Navbar>
-
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShellNavbar p="md">
+        <NavigationSidebarContent userName={userName} avatarUrl={avatarUrl} />
+      </AppShellNavbar>
+      <AppShellMain>{children}</AppShellMain>
     </AppShell>
   );
 }

@@ -12,7 +12,11 @@ import {
   Box,
   Anchor,
 } from "@mantine/core";
-import { IconBrandGithubFilled, IconX } from "@tabler/icons-react";
+import {
+  IconBrandGithubFilled,
+  IconBrandLinkedin,
+  IconX,
+} from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 import { createBrowswerSupabaseClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
@@ -23,11 +27,11 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const supabase = createBrowswerSupabaseClient();
 
-  const handleGithubLogin = async () => {
+  const handleOAuthLogin = async (provider: "github" | "linkedin_oidc") => {
     try {
       setLoading(true);
       const { error } = await supabase.auth.signInWithOAuth({
-        provider: "github",
+        provider,
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
         },
@@ -55,43 +59,58 @@ export default function LoginPage() {
   };
 
   return (
-    <Container size={420}>
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <Stack gap="md">
-          <Title order={2} ta="center">
-            {t("Title")}
-          </Title>
-          <Text c="dimmed" size="sm" ta="center">
-            {t("Description")}
-          </Text>
+    <div className="flex min-h-screen items-center justify-center">
+      <Container size={420}>
+        <Paper withBorder shadow="md" p={30} radius="md">
+          <Stack gap="md">
+            <Title order={2} ta="center">
+              {t("Title")}
+            </Title>
+            <Text c="dimmed" size="sm" ta="center">
+              {t("Description")}
+            </Text>
 
-          <Button
-            fullWidth
-            leftSection={<IconBrandGithubFilled size={20} />}
-            onClick={handleGithubLogin}
-            loading={loading}
-            disabled={loading}
-            color="black"
-          >
-            {t("ContinueWithGithub")}
-          </Button>
+            <Stack gap="sm">
+              <Button
+                fullWidth
+                leftSection={<IconBrandGithubFilled size={20} />}
+                onClick={() => handleOAuthLogin("github")}
+                loading={loading}
+                disabled={loading}
+                color="black"
+              >
+                {t("ContinueWithGithub")}
+              </Button>
 
-          <Text c="dimmed" size="xs" ta="center">
-            {t.rich("TermsText", {
-              termsLink: (chunks) => (
-                <Anchor component={Link} href="/terms">
-                  {chunks}
-                </Anchor>
-              ),
-              privacyLink: (chunks) => (
-                <Anchor component={Link} href="/privacy">
-                  {chunks}
-                </Anchor>
-              ),
-            })}
-          </Text>
-        </Stack>
-      </Paper>
-    </Container>
+              <Button
+                fullWidth
+                leftSection={<IconBrandLinkedin size={20} />}
+                onClick={() => handleOAuthLogin("linkedin_oidc")}
+                loading={loading}
+                disabled={loading}
+                style={{ backgroundColor: "#0A66C2" }}
+              >
+                Continue with LinkedIn
+              </Button>
+            </Stack>
+
+            <Text c="dimmed" size="xs" ta="center">
+              {t.rich("TermsText", {
+                termsLink: (chunks) => (
+                  <Anchor href="/terms" component={Link}>
+                    {chunks}
+                  </Anchor>
+                ),
+                privacyLink: (chunks) => (
+                  <Anchor component={Link} href="/privacy">
+                    {chunks}
+                  </Anchor>
+                ),
+              })}
+            </Text>
+          </Stack>
+        </Paper>
+      </Container>
+    </div>
   );
 }

@@ -7,13 +7,54 @@ import {
   ColorSchemeScript,
   MantineProvider,
   mantineHtmlProps,
+  createTheme,
+  Input,
+  Menu,
 } from "@mantine/core";
-import "dayjs/locale/ru";
-import {
-  DatesProvider,
-  MonthPickerInput,
-  DatePickerInput,
-} from "@mantine/dates";
+
+const theme = createTheme({
+  cursorType: "pointer",
+
+  primaryColor: "branding-primary",
+  colors: {
+    "branding-primary": [
+      "#faedff",
+      "#edd9f7",
+      "#d8b1ea",
+      "#c186dd",
+      "#ae62d2",
+      "#a34bcb",
+      "#9d3fc9",
+      "#8931b2",
+      "#7a2aa0",
+      "#6b218d",
+    ],
+  },
+  components: {
+    Menu: {
+      defaultProps: {
+        shadow: "md",
+      },
+    },
+    Button: {
+      defaultProps: {
+        className: "button-scale-effect",
+      },
+    },
+    Input: {
+      defaultProps: {
+        className: "input-scale-effect",
+      },
+    },
+    NavLink: {
+      defaultProps: {
+        className: "button-scale-effect",
+      },
+    },
+  },
+});
+import "dayjs/locale/en";
+import { DatesProvider } from "@mantine/dates";
 
 export const metadata: Metadata = {
   title: "Bondee",
@@ -34,7 +75,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <MantineProvider defaultColorScheme="auto">
+        <MantineProvider defaultColorScheme="auto" theme={theme}>
           <NextIntlClientProvider>
             <DatesProvider settings={{}}>
               <Notifications autoClose={5000} position="top-center" />

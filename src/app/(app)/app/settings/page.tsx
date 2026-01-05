@@ -13,14 +13,10 @@ export default async function SettingsPage() {
   });
 
   if (!response.ok) {
-    redirect("/login");
+    console.error("Failed to fetch user data:", response.statusText);
   }
 
   const result = await response.json();
-
-  if (!result.success || !result.data) {
-    redirect("/login");
-  }
 
   const user = result.data;
 

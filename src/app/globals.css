@@ -1,6 +1,42 @@
 @import "tailwindcss";
 @import "@mantine/core/styles.css";
 @import "@mantine/notifications/styles.css";
+@import "@mantine/dates/styles.css";
 @import "@mantine/tiptap/styles.css";
 @import "flag-icons/css/flag-icons.min.css";
-@import "@mantine/dates/styles.css";
+
+* {
+  transition: all 150ms ease;
+}
+/* Button hover/active effects */
+.button-scale-effect {
+  transition: transform 200ms ease, filter 200ms ease;
+}
+
+.button-scale-effect:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+
+.button-scale-effect:active:not(:disabled) {
+  transform: scale(0.98);
+  filter: brightness(0.9);
+}
+
+.button-scale-effect-active {
+  transition: transform 200ms ease, filter 200ms ease;
+  transform: scale(0.98);
+  filter: brightness(0.9);
+}
+
+.input-scale-effect {
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.input-scale-effect:hover:not(:disabled),
+.input-scale-effect:focus-within:not(:disabled),
+.input-scale-effect:focus:not(:disabled) {
+  transform: scale(1.02);
+}
+
+.mantine-NavLink-root {
+  transition: all 150ms ease;
+}

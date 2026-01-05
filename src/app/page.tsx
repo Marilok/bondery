@@ -1,65 +1,208 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useRef } from "react";
+import { Button, Container, Title, Text, Stack, Group } from "@mantine/core";
+import { IconNetwork, IconCalendar, IconUsers } from "@tabler/icons-react";
+import Link from "next/link";
+
+interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+}
 
 export default function Home() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    const particles: Particle[] = [];
+    const particleCount = 100;
+    const maxDistance = 120;
+
+    // Create particles
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+      });
+    }
+
+    function animate() {
+      if (!canvas || !ctx) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Update and draw particles
+      particles.forEach((particle) => {
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+
+        // Bounce off edges
+        if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
+        if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
+
+        // Draw particle
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(79, 70, 229, 0.6)";
+        ctx.fill();
+      });
+
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < maxDistance) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            const opacity = (1 - distance / maxDistance) * 0.25;
+            ctx.strokeStyle = `rgba(79, 70, 229, ${opacity})`;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+    };
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-slate-900 dark:to-indigo-950">
+      {/* Animated background */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 z-0"
+        aria-hidden="true"
+      />
+
+      {/* Hero Section */}
+      <Container size="xl" className="relative z-10">
+        <div className="flex min-h-screen flex-col items-center justify-center py-16">
+          <Stack gap="xl" className="max-w-5xl text-center">
+            {/* Main Headline */}
+            <div className="w-full space-y-6 text-center">
+              <Title
+                order={1}
+                className="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white md:text-7xl"
+              >
+                Your relationships,
+                <br />
+                <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  beautifully organized
+                </span>
+              </Title>
+
+              <Text
+                size="xl"
+                mt={"md"}
+                className="mx-auto w-full text-xl text-gray-600 dark:text-gray-400"
+              >
+                Bondee helps you nurture the connections that matter most.
+                Remember important moments, visualize your network, and never
+                miss a chance to stay in touch.
+              </Text>
+            </div>
+
+            {/* CTA Button */}
+            <div className="pt-4">
+              <Link href="/login">
+                <Button size="xl">Start Building Bonds</Button>
+              </Link>
+            </div>
+
+            {/* Features */}
+            <div className="mx-auto mt-16 grid w-full max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
+              <div className="group rounded-3xl border border-gray-200 bg-white/80 p-8 backdrop-blur-sm transition-all hover:border-indigo-300 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900/80 dark:hover:border-indigo-700">
+                <div className="mb-4 inline-flex rounded-2xl bg-indigo-100 p-4 dark:bg-indigo-950">
+                  <IconNetwork
+                    size={32}
+                    className="text-indigo-600 dark:text-indigo-400"
+                    stroke={2}
+                  />
+                </div>
+                <Title
+                  order={3}
+                  className="mb-3 text-xl font-bold text-gray-900 dark:text-white"
+                >
+                  Visualize Your Network
+                </Title>
+                <Text className="text-gray-600 dark:text-gray-400">
+                  See your relationships as an interactive map. Discover
+                  patterns and connections you never knew existed.
+                </Text>
+              </div>
+
+              <div className="group rounded-3xl border border-gray-200 bg-white/80 p-8 backdrop-blur-sm transition-all hover:border-indigo-300 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900/80 dark:hover:border-indigo-700">
+                <div className="mb-4 inline-flex rounded-2xl bg-indigo-100 p-4 dark:bg-indigo-950">
+                  <IconCalendar
+                    size={32}
+                    className="text-indigo-600 dark:text-indigo-400"
+                    stroke={2}
+                  />
+                </div>
+                <Title
+                  order={3}
+                  className="mb-3 text-xl font-bold text-gray-900 dark:text-white"
+                >
+                  Remember What Matters
+                </Title>
+                <Text className="text-gray-600 dark:text-gray-400">
+                  Track birthdays, anniversaries, and special moments. Get
+                  timely reminders so you never miss an important date.
+                </Text>
+              </div>
+
+              <div className="group rounded-3xl border border-gray-200 bg-white/80 p-8 backdrop-blur-sm transition-all hover:border-indigo-300 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900/80 dark:hover:border-indigo-700">
+                <div className="mb-4 inline-flex rounded-2xl bg-indigo-100 p-4 dark:bg-indigo-950">
+                  <IconUsers
+                    size={32}
+                    className="text-indigo-600 dark:text-indigo-400"
+                    stroke={2}
+                  />
+                </div>
+                <Title
+                  order={3}
+                  className="mb-3 text-xl font-bold text-gray-900 dark:text-white"
+                >
+                  Stay Organized
+                </Title>
+                <Text className="text-gray-600 dark:text-gray-400">
+                  All your contacts, notes, and important details in one
+                  beautiful, intuitive interface. Simple yet powerful.
+                </Text>
+              </div>
+            </div>
+          </Stack>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/8 px-5 transition-colors hover:border-transparent hover:bg-black/4 dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </Container>
     </div>
   );
 }
