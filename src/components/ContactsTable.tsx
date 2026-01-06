@@ -19,8 +19,30 @@ import {
   IconBrandFacebook,
   IconPhone,
   IconMail,
+  IconPhoto,
+  IconUser,
+  IconBriefcase,
+  IconMapPin,
+  IconNote,
+  IconClock,
 } from "@tabler/icons-react";
 import { useFormatter } from "next-intl";
+import Image from "next/image";
+import { formatContactName } from "@/lib/nameHelpers";
+
+// Column definitions with labels and icons
+const COLUMN_DEFINITIONS: Record<
+  ColumnKey,
+  { label: string; icon: React.ReactNode }
+> = {
+  avatar: { label: "Avatar", icon: <IconPhoto size={16} /> },
+  name: { label: "Name", icon: <IconUser size={16} /> },
+  title: { label: "Title", icon: <IconBriefcase size={16} /> },
+  place: { label: "Place", icon: <IconMapPin size={16} /> },
+  shortNote: { label: "Short Note", icon: <IconNote size={16} /> },
+  lastInteraction: { label: "Last Interaction", icon: <IconClock size={16} /> },
+  social: { label: "Social Media", icon: <IconBrandLinkedin size={16} /> },
+};
 
 interface SocialLink {
   icon: React.ReactNode;
@@ -74,6 +96,15 @@ function ContactSocialIcons({ contact }: { contact: Contact }) {
       label: "Facebook",
       disabled: !contact.facebook,
     },
+    {
+      icon: (
+        <Image src="/icons/signal.svg" alt="Signal" width={18} height={18} />
+      ),
+      href: contact.signal,
+      color: "indigo",
+      label: "Signal",
+      disabled: !contact.signal,
+    },
   ];
   return (
     <Group gap="xs">
@@ -113,12 +144,13 @@ export interface ColumnConfig {
   key: ColumnKey;
   label: string;
   visible: boolean;
+  icon?: React.ReactNode;
 }
 
 interface ContactsTableProps {
   contacts: Contact[];
   selectedIds?: Set<string>;
-  visibleColumns: ColumnConfig[];
+  visibleColumns: ColumnKey[] | ColumnConfig[];
   onSelectAll?: () => void;
   onSelectOne?: (id: string) => void;
   allSelected?: boolean;
@@ -129,7 +161,7 @@ interface ContactsTableProps {
 export default function ContactsTable({
   contacts,
   selectedIds,
-  visibleColumns,
+  visibleColumns: visibleColumnsProp,
   onSelectAll,
   onSelectOne,
   allSelected,
@@ -137,6 +169,18 @@ export default function ContactsTable({
   showSelection,
 }: ContactsTableProps) {
   const format = useFormatter();
+
+  // Normalize visibleColumns to ColumnConfig array
+  const visibleColumns: ColumnConfig[] = Array.isArray(visibleColumnsProp)
+    ? visibleColumnsProp[0] && typeof visibleColumnsProp[0] === "string"
+      ? (visibleColumnsProp as ColumnKey[]).map((key) => ({
+          key,
+          label: COLUMN_DEFINITIONS[key].label,
+          icon: COLUMN_DEFINITIONS[key].icon,
+          visible: true,
+        }))
+      : (visibleColumnsProp as ColumnConfig[])
+    : [];
   return (
     <Table striped highlightOnHover>
       <TableThead>
@@ -156,7 +200,10 @@ export default function ContactsTable({
               key={col.key}
               style={col.key === "avatar" ? { width: 60 } : undefined}
             >
-              {col.label}
+              <Group gap="xs" wrap="nowrap">
+                {col.icon}
+                <Text>{col.label}</Text>
+              </Group>
             </TableTh>
           ))}
         </TableTr>
@@ -178,7 +225,7 @@ export default function ContactsTable({
                   <Checkbox
                     checked={selectedIds?.has(contact.id)}
                     onChange={() => onSelectOne?.(contact.id)}
-                    aria-label={`Select ${contact.firstName} ${contact.lastName}`}
+                    aria-label={`Select ${formatContactName(contact)}`}
                   />
                 </TableTd>
               )}
@@ -192,7 +239,7 @@ export default function ContactsTable({
                           color={contact.avatarColor}
                           radius="xl"
                           size="md"
-                          name={`${contact.firstName} ${contact.lastName}`}
+                          name={formatContactName(contact)}
                         >
                           {!contact.avatar && (
                             <>
@@ -212,7 +259,7 @@ export default function ContactsTable({
                           c="blue"
                           underline="hover"
                         >
-                          {contact.firstName} {contact.lastName}
+                          {formatContactName(contact)}
                         </Anchor>
                       </TableTd>
                     );

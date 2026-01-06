@@ -24,7 +24,7 @@ const navLinks = [
   },
   {
     href: "/app/network",
-    label: "Network Graph",
+    label: "Network graph",
     icon: IconChartDots3,
   },
   {

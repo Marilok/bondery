@@ -441,12 +441,12 @@ export default function NetworkPage() {
                   ),
                 ]}
                 visibleColumns={[
-                  { key: "avatar", label: "Avatar", visible: true },
-                  { key: "name", label: "Name", visible: true },
-                  { key: "title", label: "Title", visible: true },
-                  { key: "place", label: "Place", visible: true },
-                  { key: "shortNote", label: "Short Note", visible: true },
-                  { key: "social", label: "Social Media", visible: true },
+                  "avatar",
+                  "name",
+                  "title",
+                  "place",
+                  "shortNote",
+                  "social",
                 ]}
                 showSelection={false}
               />

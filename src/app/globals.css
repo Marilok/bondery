@@ -5,38 +5,56 @@
 @import "@mantine/tiptap/styles.css";
 @import "flag-icons/css/flag-icons.min.css";
 
+:root {
+  /* Transition timing */
+  --transition-time: 200ms;
+  --transition-ease: ease;
+
+  /* Scale factors */
+  --scale-grow: 1.02;
+  --scale-shrink: 0.98;
+
+  /* Active state filter */
+  --active-filter: brightness(0.9);
+}
+
 * {
-  transition: all 150ms ease;
+  transition: all var(--transition-time) var(--transition-ease);
 }
 /* Button hover/active effects */
 .button-scale-effect {
-  transition: transform 200ms ease, filter 200ms ease;
+  transition: transform var(--transition-time) var(--transition-ease),
+    filter var(--transition-time) var(--transition-ease);
 }
 
-.button-scale-effect:hover:not(:disabled) {
-  transform: scale(1.02);
+.button-scale-effect:hover:not(:disabled),
+.button-scale-effect:focus:not(:disabled) {
+  transform: scale(var(--scale-grow));
 }
 
-.button-scale-effect:active:not(:disabled) {
-  transform: scale(0.98);
-  filter: brightness(0.9);
-}
-
+.button-scale-effect:active:not(:disabled),
 .button-scale-effect-active {
-  transition: transform 200ms ease, filter 200ms ease;
-  transform: scale(0.98);
-  filter: brightness(0.9);
+  transition: transform var(--transition-time) var(--transition-ease),
+    filter var(--transition-time) var(--transition-ease);
+  transform: scale(var(--scale-shrink));
+  filter: var(--active-filter);
 }
 
 .input-scale-effect {
-  transition: transform 200ms ease, box-shadow 200ms ease;
+  transition: transform var(--transition-time) var(--transition-ease),
+    box-shadow var(--transition-time) var(--transition-ease);
 }
 .input-scale-effect:hover:not(:disabled),
 .input-scale-effect:focus-within:not(:disabled),
 .input-scale-effect:focus:not(:disabled) {
-  transform: scale(1.02);
+  transform: scale(var(--scale-grow));
 }
 
 .mantine-NavLink-root {
-  transition: all 150ms ease;
+  transition: all var(--transition-time) var(--transition-ease);
+}
+
+.card-scale-effect:hover {
+  transition: transform var(--transition-time) var(--transition-ease);
+  transform: scale(var(--scale-grow));
 }

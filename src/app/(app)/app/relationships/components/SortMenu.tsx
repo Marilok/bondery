@@ -29,8 +29,8 @@ const sortOptions: { value: SortOrder; label: string }[] = [
   { value: "nameDesc", label: "Name Z→A" },
   { value: "surnameAsc", label: "Surname A→Z" },
   { value: "surnameDesc", label: "Surname Z→A" },
-  { value: "interactionDesc", label: "Recently Interacted" },
-  { value: "interactionAsc", label: "Least Recently Interacted" },
+  { value: "interactionDesc", label: "Newest interaction" },
+  { value: "interactionAsc", label: "Oldest interaction" },
 ];
 
 export function SortMenu({ sortOrder, setSortOrder }: SortMenuProps) {

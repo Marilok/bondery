@@ -113,7 +113,7 @@ export default function Home() {
                 order={1}
                 className="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white md:text-7xl"
               >
-                Your relationships,
+                Your network,
                 <br />
                 <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
                   beautifully organized
@@ -155,8 +155,8 @@ export default function Home() {
                   Visualize Your Network
                 </Title>
                 <Text className="text-gray-600 dark:text-gray-400">
-                  See your relationships as an interactive map. Discover
-                  patterns and connections you never knew existed.
+                  See your network as an interactive map. Discover patterns and
+                  connections you never knew existed.
                 </Text>
               </div>
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
 import { NextIntlClientProvider } from "next-intl";
 
 import {
@@ -77,12 +78,14 @@ export default function RootLayout({
       </head>
       <body>
         <MantineProvider defaultColorScheme="auto" theme={theme}>
-          <NextIntlClientProvider locale={locale}>
-            <DatesProvider settings={{}}>
-              <Notifications autoClose={5000} position="top-center" />
-              {children}
-            </DatesProvider>
-          </NextIntlClientProvider>
+          <ModalsProvider>
+            <NextIntlClientProvider locale={locale}>
+              <DatesProvider settings={{}}>
+                <Notifications autoClose={5000} position="top-center" />
+                {children}
+              </DatesProvider>
+            </NextIntlClientProvider>
+          </ModalsProvider>
         </MantineProvider>
       </body>
     </html>

@@ -10,6 +10,7 @@ export interface Contact {
   avatarColor: string;
   avatar?: string;
   lastInteraction: Date;
+  createdAt?: Date;
   connections?: string[];
   phone?: string;
   email?: string;

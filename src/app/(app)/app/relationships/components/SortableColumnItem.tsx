@@ -47,7 +47,12 @@ export function SortableColumnItem({
         </Box>
         <Checkbox
           checked={column.visible}
-          label={column.label}
+          label={
+            <Group gap="xs" wrap="nowrap">
+              {column.icon}
+              <span>{column.label}</span>
+            </Group>
+          }
           onChange={onToggle}
           disabled={column.key === "name"}
           style={{ flex: 1 }}

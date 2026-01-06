@@ -1,6 +1,7 @@
 import { RelationshipsClient } from "./RelationshipsClient";
 import { getBaseUrl } from "@/lib/config";
 import type { Contact } from "@/lib/mockData";
+import { headers } from "next/headers";
 
 type SortOrder =
   | "nameAsc"
@@ -12,8 +13,10 @@ type SortOrder =
 
 async function getContacts(query?: string, sort?: SortOrder) {
   try {
+    const headersList = await headers();
     const res = await fetch(`${getBaseUrl()}/api/contacts`, {
       cache: "no-store",
+      headers: headersList,
     });
 
     if (!res.ok) {
@@ -28,6 +31,7 @@ async function getContacts(query?: string, sort?: SortOrder) {
     let contacts = data.contacts.map((contact: Contact) => ({
       ...contact,
       lastInteraction: new Date(contact.lastInteraction),
+      createdAt: contact.createdAt ? new Date(contact.createdAt) : undefined,
     }));
 
     // Server-side filtering
@@ -78,6 +82,36 @@ async function getContacts(query?: string, sort?: SortOrder) {
   }
 }
 
+function calculateStats(contacts: Contact[]) {
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  // Total contacts
+  const totalContacts = contacts.length;
+
+  // This month's interactions (contacts with lastInteraction in current month)
+  const thisMonthInteractions = contacts.filter((contact) => {
+    const interactionDate = contact.lastInteraction;
+    return (
+      interactionDate.getMonth() === currentMonth &&
+      interactionDate.getFullYear() === currentYear
+    );
+  }).length;
+
+  // New contacts this year (contacts created in current year)
+  const newContactsThisYear = contacts.filter((contact) => {
+    if (!contact.createdAt) return false;
+    return contact.createdAt.getFullYear() === currentYear;
+  }).length;
+
+  return {
+    totalContacts,
+    thisMonthInteractions,
+    newContactsThisYear,
+  };
+}
+
 export default async function RelationshipsPage({
   searchParams,
 }: {
@@ -88,8 +122,13 @@ export default async function RelationshipsPage({
   const sort = params.sort as SortOrder | undefined;
 
   const { contacts, totalCount } = await getContacts(query, sort);
+  const stats = calculateStats(contacts);
 
   return (
-    <RelationshipsClient initialContacts={contacts} totalCount={totalCount} />
+    <RelationshipsClient
+      initialContacts={contacts}
+      totalCount={totalCount}
+      stats={stats}
+    />
   );
 }
