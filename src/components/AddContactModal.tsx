@@ -2,18 +2,11 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Stack,
-  TextInput,
-  Button,
-  Group,
-  Text,
-  FocusTrap,
-} from "@mantine/core";
+import { Stack, TextInput, Button, Group, Text, Alert } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
-import { IconUserPlus } from "@tabler/icons-react";
+import { IconInfoCircle, IconUserPlus } from "@tabler/icons-react";
 import {
   SocialMediaInput,
   validateSocialMediaInput,
@@ -229,6 +222,14 @@ function AddContactForm() {
           displayLabel
           disabled={isSubmitting}
         />
+        <Alert
+          variant="info"
+          icon={<IconInfoCircle />}
+          title="Want to add more info?"
+        >
+          You can add more details like phone, email, and other social media
+          after creating the contact.
+        </Alert>
 
         <Group justify="flex-end" mt="md">
           <Button
