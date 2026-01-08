@@ -9,8 +9,7 @@ import {
   MantineProvider,
   mantineHtmlProps,
   createTheme,
-  Input,
-  Menu,
+  Paper,
 } from "@mantine/core";
 
 const theme = createTheme({
@@ -47,9 +46,22 @@ const theme = createTheme({
         className: "input-scale-effect",
       },
     },
+    Checkbox: {
+      defaultProps: {
+        classNames: {
+          card: "button-scale-effect",
+        },
+      },
+    },
+    Paper: {
+      defaultProps: {
+        radius: "md",
+      },
+    },
     NavLink: {
       defaultProps: {
-        className: "button-scale-effect",
+        className: "button-scale-effect rounded-sm",
+        // TODO: match sm, md, lg... sizes of tailwind with mantine
       },
     },
   },
@@ -62,14 +74,51 @@ export const metadata: Metadata = {
   description: "Build bonds that last forever.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = "en-UK";
+  // Get user language and timezone from settings
+  let locale = "en";
+  let userTimezone = "UTC";
+
+  try {
+    const { headers: getHeaders } = await import("next/headers");
+    const { getBaseUrl } = await import("@/lib/config");
+    const baseUrl = getBaseUrl();
+    const headersList = await getHeaders();
+
+    const response = await fetch(`${baseUrl}/api/settings`, {
+      cache: "no-store",
+      headers: headersList,
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      if (result?.data?.timezone) {
+        userTimezone = result.data.timezone;
+      }
+      if (result?.data?.language) {
+        locale = result.data.language;
+      }
+    }
+  } catch (error) {
+    // Silently fail and use defaults
+    console.error("Failed to load user settings:", error);
+  }
+
+  // Load translation messages
+  let messages;
+  try {
+    messages = (await import(`../../translations/${locale}.json`)).default;
+  } catch (error) {
+    console.error(`Failed to load messages for locale ${locale}:`, error);
+    messages = (await import(`../../translations/en.json`)).default;
+  }
+
   return (
-    <html lang="en" {...mantineHtmlProps}>
+    <html lang={locale} {...mantineHtmlProps}>
       <head>
         <ColorSchemeScript
           nonce="8IBTHwOdqNKAWeKl7plt8g=="
@@ -79,8 +128,12 @@ export default function RootLayout({
       <body>
         <MantineProvider defaultColorScheme="auto" theme={theme}>
           <ModalsProvider>
-            <NextIntlClientProvider locale={locale}>
-              <DatesProvider settings={{}}>
+            <NextIntlClientProvider
+              locale={locale}
+              timeZone={userTimezone}
+              messages={messages}
+            >
+              <DatesProvider settings={{ locale }}>
                 <Notifications autoClose={5000} position="top-center" />
                 {children}
               </DatesProvider>

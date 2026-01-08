@@ -12,22 +12,7 @@ import {
   validateSocialMediaInput,
 } from "@/components/SocialMediaInput";
 import { INPUT_MAX_LENGTHS } from "@/lib/config";
-
-const EXAMPLE_NAMES = [
-  { firstName: "Edgar", middleName: "Allan", lastName: "Poe" },
-  { firstName: "Harry", middleName: "James", lastName: "Potter" },
-  { firstName: "John", middleName: "Ronald Reuel", lastName: "Tolkien" },
-  { firstName: "Marie", middleName: "Salomea", lastName: "Curie" },
-  { firstName: "Neil", middleName: "Alden", lastName: "Armstrong" },
-  { firstName: "Vincent", middleName: "Willem van", lastName: "Gogh" },
-  { firstName: "Ludwig", middleName: "van", lastName: "Beethoven" },
-  { firstName: "Ludwig", middleName: "von", lastName: "Mises" },
-  {
-    firstName: "Friedrich",
-    middleName: "August von",
-    lastName: "Hayek",
-  },
-];
+import { getRandomExampleName } from "@/lib/randomNameHelpers";
 
 export function openAddContactModal() {
   modals.open({
@@ -49,10 +34,7 @@ function AddContactForm() {
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const exampleName = useMemo(
-    () => EXAMPLE_NAMES[Math.floor(Math.random() * EXAMPLE_NAMES.length)],
-    []
-  );
+  const exampleName = useMemo(() => getRandomExampleName(), []);
 
   const form = useForm({
     mode: "controlled",

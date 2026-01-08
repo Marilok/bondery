@@ -21,11 +21,22 @@ import { notifications } from "@mantine/notifications";
 import { createBrowswerSupabaseClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { INTEGRATION_PROVIDERS } from "@/lib/config";
 
 export default function LoginPage() {
   const t = useTranslations("LoginPage");
   const [loading, setLoading] = useState(false);
   const supabase = createBrowswerSupabaseClient();
+
+  const getProviderIcon = (iconName: string) => {
+    const icons: Record<string, React.ComponentType<any>> = {
+      github: IconBrandGithubFilled,
+      linkedin: IconBrandLinkedin,
+    };
+    return icons[iconName] || IconBrandGithubFilled;
+  };
+
+  const activeProviders = INTEGRATION_PROVIDERS.filter((p) => p.active);
 
   const handleOAuthLogin = async (provider: "github" | "linkedin_oidc") => {
     try {
@@ -61,7 +72,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center">
       <Container size={420}>
-        <Paper withBorder shadow="md" p={30} radius="md">
+        <Paper withBorder shadow="md" p="md">
           <Stack gap="md">
             <Title order={2} ta="center">
               {t("Title")}
@@ -71,27 +82,26 @@ export default function LoginPage() {
             </Text>
 
             <Stack gap="sm">
-              <Button
-                fullWidth
-                leftSection={<IconBrandGithubFilled size={20} />}
-                onClick={() => handleOAuthLogin("github")}
-                loading={loading}
-                disabled={loading}
-                color="black"
-              >
-                {t("ContinueWithGithub")}
-              </Button>
-
-              <Button
-                fullWidth
-                leftSection={<IconBrandLinkedin size={20} />}
-                onClick={() => handleOAuthLogin("linkedin_oidc")}
-                loading={loading}
-                disabled={loading}
-                style={{ backgroundColor: "#0A66C2" }}
-              >
-                Continue with LinkedIn
-              </Button>
+              {activeProviders.map((provider) => {
+                const Icon = getProviderIcon(provider.icon);
+                return (
+                  <Button
+                    key={provider.provider}
+                    fullWidth
+                    leftSection={<Icon size={20} />}
+                    onClick={() =>
+                      handleOAuthLogin(
+                        provider.providerKey as "github" | "linkedin_oidc"
+                      )
+                    }
+                    loading={loading}
+                    disabled={loading}
+                    style={{ backgroundColor: provider.backgroundColor }}
+                  >
+                    {t("ContinueWith", { provider: provider.displayName })}
+                  </Button>
+                );
+              })}
             </Stack>
 
             <Text c="dimmed" size="xs" ta="center">

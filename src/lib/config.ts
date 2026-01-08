@@ -2,6 +2,8 @@
  * Application configuration constants
  */
 
+import { active } from "d3";
+
 export const INPUT_MAX_LENGTHS = {
   firstName: 50,
   middleName: 50,
@@ -35,3 +37,30 @@ export function getBaseUrl(): string {
   const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL;
   return vercelUrl ? `https://${vercelUrl}` : "";
 }
+
+// Doherty treshold, used for max function reply time
+export const MAX_DOHERTY_THRESHOLD = 0.7;
+
+/**
+ * Integration providers configuration
+ */
+export const INTEGRATION_PROVIDERS = [
+  {
+    provider: "github",
+    providerKey: "github",
+    displayName: "GitHub",
+    iconColor: "dark",
+    backgroundColor: "black",
+    icon: "github",
+    active: true,
+  },
+  {
+    provider: "linkedin",
+    providerKey: "linkedin_oidc",
+    displayName: "LinkedIn",
+    iconColor: "#0A66C2",
+    backgroundColor: "#0A66C2",
+    icon: "linkedin",
+    active: true,
+  },
+] as const;

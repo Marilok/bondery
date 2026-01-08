@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, Group, Text, Stack, Box } from "@mantine/core";
+import { Group, Text, Stack, Box } from "@mantine/core";
 import {
   IconSettings,
   IconTopologyFull,
@@ -10,6 +10,7 @@ import {
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { NavLinkItem } from "@/components/NavLinkItem";
+import { UserAvatar } from "@/components/UserAvatar";
 
 interface NavigationSidebarContentProps {
   userName: string;
@@ -79,14 +80,7 @@ export function NavigationSidebarContent({
 
       {/* User Avatar Card */}
       <Group mt="auto">
-        <Avatar
-          src={avatarUrl}
-          alt="User avatar"
-          color="blue"
-          radius="xl"
-          size="md"
-          name={userName}
-        />
+        <UserAvatar avatarUrl={avatarUrl} userName={userName} size="md" />
         <Text size="sm" fw={500}>
           {userName}
         </Text>

@@ -29,10 +29,32 @@ export async function GET() {
       );
     }
 
+    // Get user settings from database
+    const { data: settings } = await supabase
+      .from("user_settings")
+      .select("*")
+      .eq("user_id", user.id)
+      .single();
+
+    // Return user data with settings (avatar_url comes from user_settings, fallback to user_metadata)
+    const userData = {
+      ...user,
+      user_metadata: {
+        ...user.user_metadata,
+        // Override with settings if available
+        name: settings?.name || user.user_metadata?.name || "",
+        middlename:
+          settings?.middlename || user.user_metadata?.middlename || "",
+        surname: settings?.surname || user.user_metadata?.surname || "",
+        avatar_url:
+          settings?.avatar_url || user.user_metadata?.avatar_url || null,
+      },
+    };
+
     return NextResponse.json(
       {
         success: true,
-        data: user,
+        data: userData,
       },
       { status: 200 }
     );
@@ -102,8 +124,41 @@ export async function DELETE() {
       return auth;
     }
 
-    // Delete the user using Supabase
     const supabase = await createServerSupabaseClient();
+
+    // Delete all storage objects owned by the user before deleting the user account
+    // This prevents the "user owns storage objects" error
+    try {
+      // List all files in the user's profile-photos folder
+      const { data: files, error: listError } = await supabase.storage
+        .from("profile-photos")
+        .list(auth.id);
+
+      if (listError) {
+        console.error("Error listing user files:", listError);
+      }
+
+      // If there are files, delete them
+      if (files && files.length > 0) {
+        const filePaths = files.map((file) => `${auth.id}/${file.name}`);
+        const { error: deleteFilesError } = await supabase.storage
+          .from("profile-photos")
+          .remove(filePaths);
+
+        if (deleteFilesError) {
+          console.error("Error deleting user files:", deleteFilesError);
+          return NextResponse.json(
+            { error: "Failed to delete user files before account deletion" },
+            { status: 500 }
+          );
+        }
+      }
+    } catch (storageError) {
+      console.error("Error during storage cleanup:", storageError);
+      // Continue with user deletion even if storage cleanup fails
+    }
+
+    // Delete the user using Supabase
     const { error } = await supabase.auth.admin.deleteUser(auth.id);
 
     if (error) {

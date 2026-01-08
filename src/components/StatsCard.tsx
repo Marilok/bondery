@@ -17,13 +17,7 @@ export function StatsCard({
   color = "blue",
 }: StatsCardProps) {
   return (
-    <Paper
-      withBorder
-      p="md"
-      radius="md"
-      shadow="sm"
-      className="card-scale-effect"
-    >
+    <Paper withBorder p="md" shadow="sm" className="card-scale-effect">
       <Group justify="space-between">
         <div>
           <Text c="dimmed" size="xs" tt="uppercase" fw={700}>

@@ -1,29 +1,50 @@
 import { AppShell, AppShellMain, AppShellNavbar } from "@mantine/core";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { NavigationSidebarContent } from "@/components/NavigationSidebar";
+import { getBaseUrl } from "@/lib/config";
+import { headers } from "next/headers";
 
 async function getUserData() {
-  const supabase = await createServerSupabaseClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  try {
+    const baseUrl = getBaseUrl();
+    const headersList = await headers();
 
-  if (!user) {
+    const response = await fetch(`${baseUrl}/api/account`, {
+      cache: "no-store",
+      headers: headersList,
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user data");
+    }
+
+    const result = await response.json();
+    const user = result.data;
+
+    if (!user) {
+      return {
+        userName: "User",
+        avatarUrl: null,
+      };
+    }
+
+    const firstName = user.user_metadata?.name || "";
+    const middleName = user.user_metadata?.middlename || "";
+    const lastName = user.user_metadata?.surname || "";
+    const fullName = [firstName, middleName, lastName]
+      .filter(Boolean)
+      .join(" ");
+
+    return {
+      userName: fullName || user.email || "User",
+      avatarUrl: user.user_metadata?.avatar_url || null,
+    };
+  } catch (error) {
+    console.error("Error fetching user data:", error);
     return {
       userName: "User",
       avatarUrl: null,
     };
   }
-
-  const firstName = user.user_metadata?.name || "";
-  const middleName = user.user_metadata?.middlename || "";
-  const lastName = user.user_metadata?.surname || "";
-  const fullName = [firstName, middleName, lastName].filter(Boolean).join(" ");
-
-  return {
-    userName: fullName || user.email || "User",
-    avatarUrl: user.user_metadata?.avatar_url || null,
-  };
 }
 
 export default async function AppLayout({

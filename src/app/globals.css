@@ -3,12 +3,15 @@
 @import "@mantine/notifications/styles.css";
 @import "@mantine/dates/styles.css";
 @import "@mantine/tiptap/styles.css";
+@import "@mantine/dropzone/styles.css";
 @import "flag-icons/css/flag-icons.min.css";
 
 :root {
   /* Transition timing */
   --transition-time: 200ms;
   --transition-ease: ease;
+  --transition-ease-out: ease-out;
+  --transition-time-quick: 100ms;
 
   /* Scale factors */
   --scale-grow: 1.02;
@@ -18,36 +21,40 @@
   --active-filter: brightness(0.9);
 }
 
-* {
+/* * {
   transition: all var(--transition-time) var(--transition-ease);
-}
+} */
 /* Button hover/active effects */
-.button-scale-effect {
+.button-scale-effect:not(:disabled):not([data-disabled]):not([disabled]) {
   transition: transform var(--transition-time) var(--transition-ease),
     filter var(--transition-time) var(--transition-ease);
 }
 
-.button-scale-effect:hover:not(:disabled),
-.button-scale-effect:focus:not(:disabled) {
-  transform: scale(var(--scale-grow));
+.button-scale-effect:hover:not(:disabled):not([data-disabled]):not([disabled]),
+.button-scale-effect:focus:not(:disabled):not([data-disabled]):not([disabled]) {
+  transform: scale(var(--scale-grow)) !important;
 }
 
-.button-scale-effect:active:not(:disabled),
-.button-scale-effect-active {
+.button-scale-effect:active:not(:disabled):not([data-disabled]):not([disabled]),
+.button-scale-effect-active:not(:disabled):not([data-disabled]):not(
+    [disabled]
+  ) {
   transition: transform var(--transition-time) var(--transition-ease),
     filter var(--transition-time) var(--transition-ease);
-  transform: scale(var(--scale-shrink));
+  transform: scale(var(--scale-shrink)) !important;
   filter: var(--active-filter);
 }
 
-.input-scale-effect {
+.input-scale-effect:not(:disabled):not([data-disabled]):not([disabled]) {
   transition: transform var(--transition-time) var(--transition-ease),
     box-shadow var(--transition-time) var(--transition-ease);
 }
-.input-scale-effect:hover:not(:disabled),
-.input-scale-effect:focus-within:not(:disabled),
-.input-scale-effect:focus:not(:disabled) {
-  transform: scale(var(--scale-grow));
+.input-scale-effect:hover:not(:disabled):not([data-disabled]):not([disabled]),
+.input-scale-effect:focus-within:not(:disabled):not([data-disabled]):not(
+    [disabled]
+  ),
+.input-scale-effect:focus:not(:disabled):not([data-disabled]):not([disabled]) {
+  transform: scale(var(--scale-grow)) !important;
 }
 
 .mantine-NavLink-root {
@@ -57,4 +64,39 @@
 .card-scale-effect:hover {
   transition: transform var(--transition-time) var(--transition-ease);
   transform: scale(var(--scale-grow));
+}
+
+/* Timezone picker active option styling */
+.mantine-Combobox-option[data-combobox-selected="true"] .mantine-Text-root {
+  color: white !important;
+}
+
+.mantine-Combobox-option {
+  transition: background-color var(--transition-time-quick)
+    var(--transition-ease);
+}
+
+.mantine-Combobox-option[data-combobox-selected="true"] {
+  background-color: var(--mantine-primary-color-light);
+}
+
+.mantine-Combobox-option:hover {
+  background-color: var(--mantine-primary-color-light);
+}
+
+.transform-none {
+  transform: none !important;
+}
+
+/* Combobox search: disable transition while focused, apply transition when losing focus */
+.mantine-Combobox-search {
+  transition: none;
+}
+.mantine-Combobox-search:focus-within {
+  border-color: var(--mantine-primary-color-filled);
+  border-width: 1px;
+  transition: none;
+}
+.mantine-Combobox-search:not(:focus-within) {
+  transition: border-color var(--transition-time) var(--transition-ease);
 }
