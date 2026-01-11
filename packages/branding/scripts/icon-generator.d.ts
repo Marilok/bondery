@@ -1,7 +1,7 @@
 export interface IconConfig {
   name: string;
   size: number;
-  format: 'png' | 'ico';
+  format: "png" | "ico";
   outDir: string;
 }
 
