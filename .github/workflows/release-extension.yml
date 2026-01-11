@@ -31,6 +31,7 @@ jobs:
         run: npx turbo build --filter=chrome-extension... --filter=\!web
         env:
           NODE_ENV: production
+          APP_URL: ${{ vars.APP_URL }}
 
       - name: Create zip archive
         run: |
