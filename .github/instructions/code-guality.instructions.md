@@ -15,6 +15,7 @@ applyTo: "**"
 - DRY: Avoid duplicating code by creating reusable components and functions.
 - Use descriptive variable names (e.g., isLoading, hasError).
 - Error Handling: Implement try-catch blocks in server components to handle errors gracefully.
+- Always check for existing READ.ME files and if needed update them with relevant information about the code you are adding.
 
 ## Next.js
 
