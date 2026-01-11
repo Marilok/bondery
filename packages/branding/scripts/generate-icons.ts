@@ -1,11 +1,11 @@
 import sharp from "sharp";
-import { existsSync, mkdirSync } from "fs";
+import { existsSync, mkdirSync, copyFileSync } from "fs";
 import { join, dirname } from "path";
 
 export interface IconConfig {
   name: string;
-  size: number;
-  format: "png" | "ico";
+  size?: number;
+  format: "png" | "ico" | "svg";
   outDir: string;
 }
 
@@ -25,7 +25,7 @@ export interface GenerateIconsOptions {
 export async function generateIcons(options: GenerateIconsOptions): Promise<void> {
   const { svgPath, icons, baseDir } = options;
 
-  console.log("🎨 Generating PNG icons from SVG...");
+  console.log("🎨 Generating icons from SVG...");
 
   if (!existsSync(svgPath)) {
     console.error("❌ SVG icon not found at:", svgPath);
@@ -42,8 +42,19 @@ export async function generateIcons(options: GenerateIconsOptions): Promise<void
         mkdirSync(outputDir, { recursive: true });
       }
 
-      await sharp(svgPath).resize(icon.size, icon.size).toFile(outputPath);
-      console.log(`✅ Generated ${icon.name} at ${icon.outDir}`);
+      if (icon.format === "svg") {
+        // Copy SVG directly without conversion
+        copyFileSync(svgPath, outputPath);
+        console.log(`✅ Copied ${icon.name} to ${icon.outDir}`);
+      } else {
+        // Generate raster images (PNG, ICO)
+        if (!icon.size) {
+          console.error(`❌ Size is required for ${icon.format} format`);
+          process.exit(1);
+        }
+        await sharp(svgPath).resize(icon.size, icon.size).toFile(outputPath);
+        console.log(`✅ Generated ${icon.name} at ${icon.outDir}`);
+      }
     }
 
     console.log("✨ All icons generated successfully!");

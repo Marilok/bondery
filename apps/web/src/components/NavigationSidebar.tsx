@@ -1,12 +1,7 @@
 "use client";
 
 import { Group, Text, Stack, Box } from "@mantine/core";
-import {
-  IconSettings,
-  IconTopologyFull,
-  IconChartDots3,
-  IconMap,
-} from "@tabler/icons-react";
+import { IconSettings, IconTopologyFull, IconChartDots3, IconMap } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { NavLinkItem } from "@/components/NavLinkItem";
@@ -41,23 +36,14 @@ const navLinks = [
   },
 ];
 
-export function NavigationSidebarContent({
-  userName,
-  avatarUrl,
-}: NavigationSidebarContentProps) {
+export function NavigationSidebarContent({ userName, avatarUrl }: NavigationSidebarContentProps) {
   const pathname = usePathname();
 
   return (
     <>
       {/* Branding Card */}
       <Group mb="md">
-        <Image
-          src="/icons/icon128.png"
-          alt="Bondee logo"
-          width={40}
-          height={40}
-          priority
-        />
+        <Image src="/logo.svg" alt="Bondee logo" width={40} height={40} priority />
         <Box style={{ flex: 1 }}>
           <Text size="sm" fw={600}>
             Bondee
@@ -71,11 +57,7 @@ export function NavigationSidebarContent({
       {/* Navigation Links */}
       <Stack gap="xs" mb="auto">
         {navLinks.map((link) => (
-          <NavLinkItem
-            key={link.href}
-            {...link}
-            active={pathname === link.href}
-          />
+          <NavLinkItem key={link.href} {...link} active={pathname === link.href} />
         ))}
       </Stack>
 
