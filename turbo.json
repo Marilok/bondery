@@ -49,10 +49,12 @@
       ]
     },
     "@bondee/branding#build": {
-      "outputs": []
+      "outputs": [],
+      "env": []
     },
     "@bondee/helpers#build": {
-      "outputs": []
+      "outputs": [],
+      "env": []
     },
     "start": {
       "persistent": true,
