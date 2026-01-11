@@ -1,7 +1,7 @@
 import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import InstagramButton from "./InstagramButton";
-import { MantineWrapper } from "./MantineWrapper";
+import { MantineWrapper } from "../shared/MantineWrapper";
 
 // Extract Instagram username from URL
 function getInstagramUsername(): string | null {
@@ -11,9 +11,7 @@ function getInstagramUsername(): string | null {
   if (
     match &&
     match[1] &&
-    !["explore", "reels", "stories", "direct", "accounts", "settings"].includes(
-      match[1]
-    )
+    !["explore", "reels", "stories", "direct", "accounts", "settings"].includes(match[1])
   ) {
     return match[1];
   }
@@ -52,7 +50,7 @@ function injectBondeeButton() {
       <MantineWrapper>
         <InstagramButton username={username} />
       </MantineWrapper>
-    </StrictMode>
+    </StrictMode>,
   );
 
   console.log("Bondee Extension: Button injected successfully");
@@ -77,6 +75,11 @@ function setupObserver() {
 
 // Initialize
 function init() {
+  // Safety check: only run on Instagram
+  if (!window.location.hostname.includes("instagram.com")) {
+    return;
+  }
+
   console.log("Bondee Extension: Initializing Instagram integration");
 
   injectBondeeButton();

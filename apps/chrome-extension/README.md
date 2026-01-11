@@ -13,6 +13,7 @@ A Chrome extension built with **React** and **TypeScript** to enhance the Bondee
 
 - Quick access to Bondee app
 - **Instagram Integration**: Automatically adds "Open in Bondee" button on Instagram profiles
+- **LinkedIn Integration**: Automatically adds "Open in Bondee" button on LinkedIn profiles
 - Content script integration with Bondee web app
 - Background service worker for persistent functionality
 - Custom context menus
@@ -26,6 +27,21 @@ When you visit an Instagram profile page, the extension will:
 2. Add an "Open in Bondee" button after the profile section (class `.x14vqqas`)
 3. When clicked, it redirects to your Bondee app
 4. Automatically looks up or creates a contact for that Instagram user
+5. Extracts profile name, photo, and saves them to your Bondee contacts
+
+## LinkedIn Integration
+
+When you visit a LinkedIn profile page, the extension will:
+
+1. Detect the LinkedIn username from the URL
+2. Add an "Open in Bondee" button in the profile actions section
+3. When clicked, it redirects to your Bondee app
+4. Automatically looks up or creates a contact for that LinkedIn user
+5. Extracts profile information including:
+   - Full name (first, middle, last)
+   - Job title
+   - Location
+   - Profile photo
 
 ## Development
 

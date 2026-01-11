@@ -36,11 +36,15 @@ const getOrigin = (url: string) => {
 
 const manifest = {
   manifest_version: 3,
-  name: "Bondee Instagram Integration",
-  version: "0.2.0",
-  description: "Import Instagram contacts directly to Bondee",
+  name: "Bondee Social Integration",
+  version: "0.4.0",
+  description: "Import Instagram and LinkedIn contacts directly to Bondee",
   permissions: ["storage"],
-  host_permissions: ["https://www.instagram.com/*", getOrigin(APP_URL)],
+  host_permissions: [
+    "https://www.instagram.com/*",
+    "https://www.linkedin.com/*",
+    getOrigin(APP_URL!),
+  ],
   icons: {
     "16": "../public/icons/icon16.png",
     "48": "../public/icons/icon48.png",
@@ -50,6 +54,10 @@ const manifest = {
     {
       matches: ["https://www.instagram.com/*"],
       js: ["instagram/index.tsx"],
+    },
+    {
+      matches: ["https://www.linkedin.com/*"],
+      js: ["linkedin/index.tsx"],
     },
   ],
 };

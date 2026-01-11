@@ -15,8 +15,10 @@
 
 /* Button hover/active effects */
 .button-scale-effect:not(:disabled):not([data-disabled]):not([disabled]) {
-  transition: transform var(--transition-time) var(--transition-ease),
-    filter var(--transition-time) var(--transition-ease);
+  transition:
+    transform var(--transition-time) var(--transition-ease),
+    filter var(--transition-time) var(--transition-ease),
+    background-color var(--transition-time) var(--transition-ease);
 }
 
 .button-scale-effect:hover:not(:disabled):not([data-disabled]):not([disabled]),
@@ -25,24 +27,24 @@
 }
 
 .button-scale-effect:active:not(:disabled):not([data-disabled]):not([disabled]),
-.button-scale-effect-active:not(:disabled):not([data-disabled]):not(
-    [disabled]
-  ) {
-  transition: transform var(--transition-time) var(--transition-ease),
-    filter var(--transition-time) var(--transition-ease);
+.button-scale-effect-active:not(:disabled):not([data-disabled]):not([disabled]) {
+  transition:
+    transform var(--transition-time) var(--transition-ease),
+    filter var(--transition-time) var(--transition-ease),
+    background-color var(--transition-time) var(--transition-ease);
   transform: scale(var(--scale-shrink)) !important;
   filter: var(--active-filter);
 }
 
 .input-scale-effect:not(:disabled):not([data-disabled]):not([disabled]) {
-  transition: transform var(--transition-time) var(--transition-ease),
+  transition:
+    transform var(--transition-time) var(--transition-ease),
+    background-color var(--transition-time) var(--transition-ease),
     box-shadow var(--transition-time) var(--transition-ease);
 }
 
 .input-scale-effect:hover:not(:disabled):not([data-disabled]):not([disabled]),
-.input-scale-effect:focus-within:not(:disabled):not([data-disabled]):not(
-    [disabled]
-  ),
+.input-scale-effect:focus-within:not(:disabled):not([data-disabled]):not([disabled]),
 .input-scale-effect:focus:not(:disabled):not([data-disabled]):not([disabled]) {
   transform: scale(var(--scale-grow)) !important;
 }
@@ -62,8 +64,7 @@
 }
 
 .mantine-Combobox-option {
-  transition: background-color var(--transition-time-quick)
-    var(--transition-ease);
+  transition: background-color var(--transition-time-quick) var(--transition-ease);
 }
 
 .mantine-Combobox-option[data-combobox-selected="true"] {

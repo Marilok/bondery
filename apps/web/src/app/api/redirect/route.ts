@@ -3,23 +3,26 @@ import { NextRequest, NextResponse } from "next/server";
 import { validateImageUpload } from "@/lib/imageValidation";
 
 interface ProfileData {
-  instagram: string;
+  instagram?: string;
+  linkedin?: string;
   firstName?: string;
   middleName?: string;
   lastName?: string;
   profileImageUrl?: string;
+  title?: string;
+  place?: string;
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body: ProfileData = await request.json();
-    const { instagram, firstName, middleName, lastName, profileImageUrl } =
+    const { instagram, linkedin, firstName, middleName, lastName, profileImageUrl, title, place } =
       body;
 
-    if (!instagram) {
+    if (!instagram && !linkedin) {
       return NextResponse.json(
-        { error: "Instagram username is required" },
-        { status: 400 }
+        { error: "Instagram or LinkedIn username is required" },
+        { status: 400 },
       );
     }
 
@@ -35,32 +38,37 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Look up contact by Instagram username
-    const { data: existingContact, error: lookupError } = await supabase
-      .from("contacts")
-      .select("id, avatar")
-      .eq("user_id", user.id)
-      .eq("instagram", instagram)
-      .single();
+    // Build query to look up contact
+    let query = supabase.from("contacts").select("id, avatar, title, place").eq("user_id", user.id);
+
+    if (instagram) {
+      query = query.eq("instagram", instagram);
+    } else if (linkedin) {
+      query = query.eq("linkedin", linkedin);
+    }
+
+    const { data: existingContact, error: lookupError } = await query.single();
 
     if (lookupError && lookupError.code !== "PGRST116") {
       console.error("Error looking up contact:", lookupError);
-      return NextResponse.json(
-        { error: "Failed to look up contact" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Failed to look up contact" }, { status: 500 });
     }
 
     // If contact exists
     if (existingContact) {
       // Update profile photo if provided and contact doesn't have one
       if (profileImageUrl && !existingContact.avatar) {
-        await updateContactPhoto(
-          supabase,
-          existingContact.id,
-          user.id,
-          profileImageUrl
-        );
+        await updateContactPhoto(supabase, existingContact.id, user.id, profileImageUrl);
+      }
+
+      // Update title if provided and contact doesn't have one
+      if (title && !existingContact.title) {
+        await supabase.from("contacts").update({ title }).eq("id", existingContact.id);
+      }
+
+      // Update place if provided and contact doesn't have one
+      if (place && !existingContact.place) {
+        await supabase.from("contacts").update({ place }).eq("id", existingContact.id);
       }
 
       return NextResponse.json({
@@ -72,22 +80,28 @@ export async function POST(request: NextRequest) {
     // Contact doesn't exist, create a new one
     const insertData: {
       user_id: string;
-      instagram: string;
+      instagram?: string;
+      linkedin?: string;
       first_name: string;
       middle_name?: string;
       last_name?: string;
+      title?: string;
+      place?: string;
       created_at: string;
       updated_at: string;
     } = {
       user_id: user.id,
-      instagram: instagram,
-      first_name: firstName || instagram,
+      first_name: firstName || instagram || linkedin || "Unknown",
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
 
+    if (instagram) insertData.instagram = instagram;
+    if (linkedin) insertData.linkedin = linkedin;
     if (middleName) insertData.middle_name = middleName;
     if (lastName) insertData.last_name = lastName;
+    if (title) insertData.title = title;
+    if (place) insertData.place = place;
 
     const { data: newContact, error: createError } = await supabase
       .from("contacts")
@@ -97,20 +111,12 @@ export async function POST(request: NextRequest) {
 
     if (createError || !newContact) {
       console.error("Error creating contact:", createError);
-      return NextResponse.json(
-        { error: "Failed to create contact" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Failed to create contact" }, { status: 500 });
     }
 
     // Upload profile photo if provided
     if (profileImageUrl) {
-      await updateContactPhoto(
-        supabase,
-        newContact.id,
-        user.id,
-        profileImageUrl
-      );
+      await updateContactPhoto(supabase, newContact.id, user.id, profileImageUrl);
     }
 
     return NextResponse.json({
@@ -119,10 +125,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Unexpected error in /api/redirect POST:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
@@ -130,7 +133,7 @@ async function updateContactPhoto(
   supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>,
   contactId: string,
   userId: string,
-  imageUrl: string
+  imageUrl: string,
 ) {
   try {
     // Fetch the image
@@ -167,16 +170,11 @@ async function updateContactPhoto(
     }
 
     // Get public URL
-    const { data: urlData } = supabase.storage
-      .from("avatars")
-      .getPublicUrl(fileName);
+    const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(fileName);
 
     if (urlData?.publicUrl) {
       // Update contact with avatar URL
-      await supabase
-        .from("contacts")
-        .update({ avatar: urlData.publicUrl })
-        .eq("id", contactId);
+      await supabase.from("contacts").update({ avatar: urlData.publicUrl }).eq("id", contactId);
     }
   } catch (error) {
     console.error("Error in updateContactPhoto:", error);
@@ -186,15 +184,18 @@ async function updateContactPhoto(
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const instagramUsername = searchParams.get("instagram");
+  const linkedinUsername = searchParams.get("linkedin");
   const firstName = searchParams.get("firstName");
   const middleName = searchParams.get("middleName");
   const lastName = searchParams.get("lastName");
   const profileImageUrl = searchParams.get("profileImageUrl");
+  const title = searchParams.get("title");
+  const place = searchParams.get("place");
 
-  if (!instagramUsername) {
+  if (!instagramUsername && !linkedinUsername) {
     return NextResponse.json(
-      { error: "Instagram username is required" },
-      { status: 400 }
+      { error: "Instagram or LinkedIn username is required" },
+      { status: 400 },
     );
   }
 
@@ -211,66 +212,74 @@ export async function GET(request: NextRequest) {
       // Redirect to login with return URL
       const returnUrl = `/api/redirect?${searchParams.toString()}`;
       return NextResponse.redirect(
-        new URL(
-          `/login?returnUrl=${encodeURIComponent(returnUrl)}`,
-          request.url
-        )
+        new URL(`/login?returnUrl=${encodeURIComponent(returnUrl)}`, request.url),
       );
     }
 
-    // Look up contact by Instagram username
-    const { data: existingContact, error: lookupError } = await supabase
-      .from("contacts")
-      .select("id, avatar")
-      .eq("user_id", user.id)
-      .eq("instagram", instagramUsername)
-      .single();
+    // Build query to look up contact
+    let query = supabase.from("contacts").select("id, avatar, title, place").eq("user_id", user.id);
+
+    if (instagramUsername) {
+      query = query.eq("instagram", instagramUsername);
+    } else if (linkedinUsername) {
+      query = query.eq("linkedin", linkedinUsername);
+    }
+
+    const { data: existingContact, error: lookupError } = await query.single();
 
     if (lookupError && lookupError.code !== "PGRST116") {
       // PGRST116 is "no rows found", which is fine
       console.error("Error looking up contact:", lookupError);
-      return NextResponse.json(
-        { error: "Failed to look up contact" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Failed to look up contact" }, { status: 500 });
     }
 
     // If contact exists
     if (existingContact) {
       // Update profile photo if provided and contact doesn't have one
       if (profileImageUrl && !existingContact.avatar) {
-        await updateContactPhoto(
-          supabase,
-          existingContact.id,
-          user.id,
-          profileImageUrl
-        );
+        await updateContactPhoto(supabase, existingContact.id, user.id, profileImageUrl);
+      }
+
+      // Update title if provided and contact doesn't have one
+      if (title && !existingContact.title) {
+        await supabase.from("contacts").update({ title }).eq("id", existingContact.id);
+      }
+
+      // Update place if provided and contact doesn't have one
+      if (place && !existingContact.place) {
+        await supabase.from("contacts").update({ place }).eq("id", existingContact.id);
       }
 
       return NextResponse.redirect(
-        new URL(`/app/person?person_id=${existingContact.id}`, request.url)
+        new URL(`/app/person?person_id=${existingContact.id}`, request.url),
       );
     }
 
     // Contact doesn't exist, create a new one
     const insertData: {
       user_id: string;
-      instagram: string;
+      instagram?: string;
+      linkedin?: string;
       first_name: string;
       middle_name?: string;
       last_name?: string;
+      title?: string;
+      place?: string;
       created_at: string;
       updated_at: string;
     } = {
       user_id: user.id,
-      instagram: instagramUsername,
-      first_name: firstName || instagramUsername,
+      first_name: firstName || instagramUsername || linkedinUsername || "Unknown",
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
 
+    if (instagramUsername) insertData.instagram = instagramUsername;
+    if (linkedinUsername) insertData.linkedin = linkedinUsername;
     if (middleName) insertData.middle_name = middleName;
     if (lastName) insertData.last_name = lastName;
+    if (title) insertData.title = title;
+    if (place) insertData.place = place;
 
     const { data: newContact, error: createError } = await supabase
       .from("contacts")
@@ -280,31 +289,18 @@ export async function GET(request: NextRequest) {
 
     if (createError || !newContact) {
       console.error("Error creating contact:", createError);
-      return NextResponse.json(
-        { error: "Failed to create contact" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Failed to create contact" }, { status: 500 });
     }
 
     // Upload profile photo if provided
     if (profileImageUrl) {
-      await updateContactPhoto(
-        supabase,
-        newContact.id,
-        user.id,
-        profileImageUrl
-      );
+      await updateContactPhoto(supabase, newContact.id, user.id, profileImageUrl);
     }
 
     // Redirect to the newly created contact's page
-    return NextResponse.redirect(
-      new URL(`/app/person?person_id=${newContact.id}`, request.url)
-    );
+    return NextResponse.redirect(new URL(`/app/person?person_id=${newContact.id}`, request.url));
   } catch (error) {
     console.error("Unexpected error in /api/redirect:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
