@@ -37,7 +37,7 @@ const getOrigin = (url: string) => {
 const manifest = {
   manifest_version: 3,
   name: "Bondee Instagram Integration",
-  version: "0.1.0",
+  version: "0.2.0",
   description: "Import Instagram contacts directly to Bondee",
   permissions: ["storage"],
   host_permissions: ["https://www.instagram.com/*", getOrigin(APP_URL)],
