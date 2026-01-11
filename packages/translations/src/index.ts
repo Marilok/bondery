@@ -6,3 +6,9 @@
 
 export const SUPPORTED_LOCALES = ["en", "cs"] as const;
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+
+// Re-export translations
+import enTranslations from "./en.json";
+import csTranslations from "./cs.json";
+
+export { enTranslations as en, csTranslations as cs };

@@ -5,7 +5,12 @@ import { getBaseUrl } from "@/lib/config";
 import { getAuthHeaders } from "@/lib/authHeaders";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import * as translations from "@bondee/translations";
 
+/**
+ * Fetches user data from the internal API.
+ * Returns user name and avatar URL for the navigation sidebar.
+ */
 async function getUserData() {
   try {
     const baseUrl = getBaseUrl();
@@ -49,7 +54,7 @@ async function getUserData() {
 }
 
 /**
- * Fetches user locale settings from the API.
+ * Fetches user locale settings from the internal API.
  * Returns the user's preferred language and timezone.
  */
 async function getUserSettings() {
@@ -101,14 +106,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     getUserSettings(),
   ]);
 
-  // Load translation messages for the user's preferred locale
-  let messages;
-  try {
-    messages = (await import(`@bondee/translations/${locale}`)).default;
-  } catch (error) {
-    console.error(`Failed to load messages for locale ${locale}:`, error);
-    messages = (await import(`@bondee/translations/en`)).default;
-  }
+  // Get translation messages for the user's preferred locale
+  const messages = translations[locale] || translations.en;
 
   return (
     <LocaleProvider locale={locale} timezone={timezone} messages={messages}>

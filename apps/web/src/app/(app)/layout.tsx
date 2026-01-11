@@ -1,5 +1,6 @@
 import { LocaleProvider } from "@/components/UserLocaleProvider";
 import { getLocaleFromHeaders } from "@/lib/i18n/getLocaleFromHeaders";
+import * as translations from "@bondee/translations";
 
 /**
  * Force dynamic rendering because we use headers() for locale detection
@@ -16,14 +17,8 @@ export default async function AppGroupLayout({ children }: { children: React.Rea
   const locale = await getLocaleFromHeaders();
   const timezone = "UTC";
 
-  // Load translation messages
-  let messages;
-  try {
-    messages = (await import(`@bondee/translations/${locale}`)).default;
-  } catch (error) {
-    console.error(`Failed to load messages for locale ${locale}:`, error);
-    messages = (await import(`@bondee/translations/en`)).default;
-  }
+  // Get translation messages for the locale
+  const messages = translations[locale] || translations.en;
 
   return (
     <LocaleProvider locale={locale} timezone={timezone} messages={messages}>
