@@ -28,7 +28,7 @@ jobs:
           echo "APP_URL=${{ vars.APP_URL }}" > apps/chrome-extension/.env.production.local
 
       - name: Build Chrome Extension
-        run: npm run build --filter=chrome-extension
+        run: turbo build --filter=chrome-extension... --filter=\!web
         env:
           NODE_ENV: production
 
