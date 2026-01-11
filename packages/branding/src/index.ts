@@ -4,5 +4,5 @@
  * Exports brand assets including icons and shared Mantine theme
  */
 
-export { BondeeIcon, BondeeIconWhite } from "./react";
+export { BondeeIcon, BondeeIconWhite } from "./react/index";
 export { bondeeTheme } from "./theme";

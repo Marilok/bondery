@@ -215,6 +215,14 @@ turbo <task> --verbose
 turbo clean
 ```
 
+### Remote Caching
+This monorepo is set up to use Turborepo's remote caching feature. This allows build outputs to be shared across different environments (e.g., CI/CD pipelines), speeding up builds significantly.
+
+```bash
+npx turbo login
+
+```
+
 ## 📚 Tech Stack
 
 ### Web App
@@ -226,67 +234,3 @@ turbo clean
 - **Maps**: Leaflet + MapLibre GL
 - **Charts**: D3.js
 - **Internationalization**: next-intl
-
-## 🤝 Contributing
-
-1. Create a new branch for your feature
-2. Make your changes
-3. Run tests and type checking: `npm run check-types && npm run lint`
-4. Build to ensure everything works: `npm run build`
-5. Submit a pull request
-
-## 📝 Adding a New Package
-
-To add a new package to the monorepo:
-
-1. Create a new directory in `apps/` or `packages/`
-2. Initialize with `package.json`
-3. Add appropriate scripts (`dev`, `build`, `check-types`, etc.)
-4. Install dependencies from the root: `npm install`
-5. Update this README with the new package information
-
-## 🐛 Troubleshooting
-
-### Build Failures
-
-If you encounter build failures:
-
-```bash
-# Clean everything and reinstall
-npm run clean
-rm -rf node_modules package-lock.json
-npm install
-```
-
-### Cache Issues
-
-If you're experiencing caching issues:
-
-```bash
-# Clear Turborepo cache
-rm -rf .turbo
-
-# Clear Next.js cache
-rm -rf apps/web/.next
-```
-
-### Port Already in Use
-
-If port 3000 is already in use:
-
-```bash
-# Run on a different port
-PORT=3001 npm run dev --filter=web
-```
-
-## 📄 License
-
-[Your License Here]
-
-## 🔗 Links
-
-- [Turborepo Documentation](https://turborepo.com/docs)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Supabase Documentation](https://supabase.com/docs)
-- [Mantine UI Documentation](https://mantine.dev/)
-
