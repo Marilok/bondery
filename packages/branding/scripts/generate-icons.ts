@@ -36,12 +36,12 @@ export async function generateIcons(options: GenerateIconsOptions): Promise<void
     for (const icon of icons) {
       const outputPath = join(baseDir, icon.outDir, icon.name);
       const outputDir = dirname(outputPath);
-      
+
       // Ensure output directory exists
       if (!existsSync(outputDir)) {
         mkdirSync(outputDir, { recursive: true });
       }
-      
+
       await sharp(svgPath).resize(icon.size, icon.size).toFile(outputPath);
       console.log(`✅ Generated ${icon.name} at ${icon.outDir}`);
     }

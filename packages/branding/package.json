@@ -9,6 +9,10 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
+    "./icon-generator": {
+      "import": "./scripts/generate-icons.ts",
+      "require": "./scripts/generate-icons.ts"
+    },
     "./icons": {
       "import": "./src/react/index.ts",
       "require": "./src/react/index.ts"
@@ -29,12 +33,16 @@
     }
   },
   "files": [
-    "src"
+    "src",
+    "scripts"
   ],
   "scripts": {
     "build": "echo 'No build step'",
-    "generate-icons": "tsx scripts/generate-react-icons.ts",
-    "prebuild": "npm run generate-icons"
+    "generate-react-icons": "tsx scripts/generate-react-icons.ts",
+    "prebuild": "npm run generate-react-icons"
+  },
+  "dependencies": {
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "@svgr/core": "^8.1.0",
