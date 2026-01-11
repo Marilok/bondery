@@ -1,5 +1,7 @@
 # Chrome Extension Releases
 
+## Current Version: 0.4.0
+
 ## Version Naming Convention
 
 The Chrome Extension uses **separate versioning** from the web app:
@@ -12,22 +14,44 @@ This allows independent version numbering for each component.
 
 To create a new release of the Bondee Chrome Extension:
 
-1. **Update the version** in `apps/chrome-extension/package.json` and `apps/chrome-extension/scripts/generate-manifest.ts`
+### 1. Update Version Numbers
 
-2. **Commit your changes**:
-   ```bash
-   git add .
-   git commit -m "Bump extension version to X.Y.Z"
-   ```
+Update the version in **both** of these files:
+- `apps/chrome-extension/package.json` → `"version": "X.Y.Z"`
+- `apps/chrome-extension/scripts/generate-manifest.ts` → `version: "X.Y.Z"`
 
-3. **Create and push an extension version tag**:
-   ```bash
-   git tag ext-v0.2.0
-   git push origin ext-v0.2.0
-   ```
+### 2. Regenerate Manifest
 
-4. **GitHub Actions will automatically**:
-   - Build the extension in production mode (extension only, not the web app)
+```bash
+cd apps/chrome-extension
+npm run generate-manifest
+```
+
+### 3. Commit Changes
+
+```bash
+git add .
+git commit -m "chore(extension): Bump version to X.Y.Z"
+git push
+```
+
+### 4. Create and Push Tag
+
+```bash
+# Replace X.Y.Z with your version number (e.g., 0.4.0)
+git tag ext-vX.Y.Z
+git push origin ext-vX.Y.Z
+```
+
+**Example for version 0.4.0:**
+```bash
+git tag ext-v0.4.0
+git push origin ext-v0.4.0
+```
+
+### 5. GitHub Actions Will Automatically
+
+- Build the extension in production mode (extension only, not the web app)
    - Create a GitHub release
    - Upload the extension as a downloadable `.zip` file
 
