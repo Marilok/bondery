@@ -45,6 +45,19 @@ jobs:
           VERSION=${GITHUB_REF#refs/tags/ext-}
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
+      - name: Delete previous extension releases
+        run: |
+          # Get all releases with extension tags (ext-v*)
+          gh release list --limit 100 | grep "^ext-v" | awk '{print $1}' | while read tag; do
+            # Skip the current tag we're about to create
+            if [ "$tag" != "${{ github.ref_name }}" ]; then
+              echo "Deleting release: $tag"
+              gh release delete "$tag" --yes --cleanup-tag || true
+            fi
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
