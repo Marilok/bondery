@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@mantine/core";
 import { config } from "../config";
-import { BondeeIconWhite } from "@bondee/branding";
+import { BondeeIconWhite } from "@bondery/branding";
 import { sanitizeName } from "../utils/nameHelpers";
 
 interface InstagramButtonProps {
@@ -89,7 +89,7 @@ const InstagramButton: React.FC<InstagramButtonProps> = ({ username }) => {
       // Single redirect with all data
       window.open(`${config.appUrl}/api/redirect?${params.toString()}`, "_blank");
     } catch (error) {
-      console.error("Error opening in Bondee:", error);
+      console.error("Error opening in Bondery:", error);
     } finally {
       setIsLoading(false);
     }
@@ -102,7 +102,7 @@ const InstagramButton: React.FC<InstagramButtonProps> = ({ username }) => {
       fullWidth
       leftSection={<BondeeIconWhite width={16} height={16} />}
     >
-      Open in Bondee
+      Open in Bondery
     </Button>
   );
 };

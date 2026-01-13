@@ -125,7 +125,7 @@ export default function Home() {
                 mt={"md"}
                 className="mx-auto w-full text-xl text-gray-600 dark:text-gray-400"
               >
-                Bondee helps you nurture the connections that matter most.
+                Bondery helps you nurture the connections that matter most.
                 Remember important moments, visualize your network, and never
                 miss a chance to stay in touch.
               </Text>

@@ -8,7 +8,7 @@
     "Description": "Stránka, kterou hledáte, neexistuje."
   },
   "LoginPage": {
-    "Title": "Bondee",
+    "Title": "Bondery",
     "Description": "Přihlásíme vás nebo vytvoříme nový účet, pokud jej ještě nemáte.",
     "ContinueWith": "Pokračovat s {provider}",
     "TermsText": "Pokračováním souhlasíte s našimi <termsLink>Podmínkami služby</termsLink> a <privacyLink>Zásadami ochrany osobních údajů</privacyLink>.",

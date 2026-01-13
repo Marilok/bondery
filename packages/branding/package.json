@@ -1,7 +1,7 @@
 {
-  "name": "@bondee/branding",
-  "version": "0.0.1",
-  "description": "Bondee branding assets and icons",
+  "name": "@bondery/branding",
+  "version": "0.1.0",
+  "description": "Bondery branding assets and icons",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "exports": {

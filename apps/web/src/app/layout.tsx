@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
-import { bondeeTheme } from "@bondee/branding/theme";
+import { bonderyTheme } from "@bondery/branding/theme";
 
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from "@mantine/core";
 
@@ -13,7 +13,7 @@ import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from "@mantine/c
  * - (app)/app layout: user settings locale for authenticated routes
  */
 export const metadata: Metadata = {
-  title: "Bondee",
+  title: "Bondery",
   description: "Build bonds that last forever.",
 };
 
@@ -28,7 +28,7 @@ export default async function RootLayout({
         <ColorSchemeScript nonce="8IBTHwOdqNKAWeKl7plt8g==" defaultColorScheme="auto" />
       </head>
       <body>
-        <MantineProvider defaultColorScheme="auto" theme={bondeeTheme}>
+        <MantineProvider defaultColorScheme="auto" theme={bonderyTheme}>
           <ModalsProvider>
             <Notifications autoClose={5000} position="top-center" />
             {children}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@mantine/core";
 import { config } from "../config";
-import { BondeeIconWhite } from "@bondee/branding";
+import { BondeeIconWhite } from "@bondery/branding";
 import { sanitizeName } from "../utils/nameHelpers";
 
 interface LinkedInButtonProps {
@@ -240,7 +240,7 @@ const LinkedInButton: React.FC<LinkedInButtonProps> = ({ username }) => {
       // Single redirect with all data
       window.open(`${config.appUrl}/api/redirect?${params.toString()}`, "_blank");
     } catch (error) {
-      console.error("Error opening in Bondee:", error);
+      console.error("Error opening in Bondery:", error);
     } finally {
       setIsLoading(false);
     }
@@ -254,7 +254,7 @@ const LinkedInButton: React.FC<LinkedInButtonProps> = ({ username }) => {
       size="xl"
       leftSection={<BondeeIconWhite width={16} height={16} />}
     >
-      Open in Bondee
+      Open in Bondery
     </Button>
   );
 };

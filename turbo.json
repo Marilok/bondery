@@ -48,11 +48,11 @@
         "apps/web/.env.development.local"
       ]
     },
-    "@bondee/branding#build": {
+    "@bondery/branding#build": {
       "outputs": [],
       "env": []
     },
-    "@bondee/helpers#build": {
+    "@bondery/helpers#build": {
       "outputs": [],
       "env": []
     },

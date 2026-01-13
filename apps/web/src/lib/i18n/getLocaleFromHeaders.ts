@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { SUPPORTED_LOCALES, type SupportedLocale } from "@bondee/translations";
+import { SUPPORTED_LOCALES, type SupportedLocale } from "@bondery/translations";
 
 /**
  * Gets the preferred locale from the browser's Accept-Language header.

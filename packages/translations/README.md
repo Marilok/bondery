@@ -1,20 +1,20 @@
-# @bondee/translations
+# @bondery/translations
 
-Bondee internationalization (i18n) translations package.
+Bondery internationalization (i18n) translations package.
 
 ## Usage
 
 ### Import translation files
 
 ```typescript
-import cs from '@bondee/translations/cs';
-import en from '@bondee/translations/en';
+import cs from '@bondery/translations/cs';
+import en from '@bondery/translations/en';
 ```
 
 ### Supported Locales
 
 ```typescript
-import { SUPPORTED_LOCALES } from '@bondee/translations';
+import { SUPPORTED_LOCALES } from '@bondery/translations';
 ```
 
 ## Available Languages

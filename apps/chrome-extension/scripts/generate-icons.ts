@@ -1,4 +1,4 @@
-import { generateIcons } from "@bondee/branding/icon-generator";
+import { generateIcons } from "@bondery/branding/icon-generator";
 import { join } from "path";
 
 const icons = [

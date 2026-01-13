@@ -1,12 +1,12 @@
-# Bondee Monorepo
+# Bondery Monorepo
 
-A monorepo containing the Bondee application ecosystem, managed with [Turborepo](https://turborepo.com).
+A monorepo containing the Bondery application ecosystem, managed with [Turborepo](https://turborepo.com).
 
 ## 📦 What's Inside?
 
 This monorepo includes the following packages/apps:
 
-- `apps/web`: A [Next.js](https://nextjs.org/) application for the main Bondee web platform
+- `apps/web`: A [Next.js](https://nextjs.org/) application for the main Bondery web platform
 - `apps/chrome-extension`: A Chrome extension for Instagram integration
 - `packages/branding`: Shared branding assets, theme, and styles
 - `packages/translations`: Internationalization (i18n) translation files
@@ -230,7 +230,7 @@ If any required variables are missing, the build will fail with a clear error me
 ## 📁 Project Structure
 
 ```
-bondee/
+bondery/
 ├── apps/
 │   ├── web/                    # Next.js web application
 │   │   ├── src/               # Application source code
@@ -245,7 +245,7 @@ bondee/
 ├── packages/                  # Shared packages
 │   ├── branding/             # Shared theme, styles, and icons
 │   │   ├── src/
-│   │   │   ├── icon.svg      # Main Bondee icon
+│   │   │   ├── icon.svg      # Main Bondery icon
 │   │   │   ├── theme.ts      # Mantine theme configuration
 │   │   │   └── styles.css    # Custom Mantine styles
 │   │   └── package.json

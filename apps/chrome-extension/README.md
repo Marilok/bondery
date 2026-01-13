@@ -1,6 +1,6 @@
-# Bondee Chrome Extension
+# Bondery Chrome Extension
 
-A Chrome extension built with **React** and **TypeScript** to enhance the Bondee experience.
+A Chrome extension built with **React** and **TypeScript** to enhance the Bondery experience.
 
 ## Tech Stack
 
@@ -11,10 +11,11 @@ A Chrome extension built with **React** and **TypeScript** to enhance the Bondee
 
 ## Features
 
-- Quick access to Bondee app
-- **Instagram Integration**: Automatically adds "Open in Bondee" button on Instagram profiles
-- **LinkedIn Integration**: Automatically adds "Open in Bondee" button on LinkedIn profiles
-- Content script integration with Bondee web app
+- Quick access to Bondery app
+- **Instagram Integration**: Automatically adds "Open in Bondery" button on Instagram profiles
+- **LinkedIn Integration**: Automatically adds "Open in Bondery" button on LinkedIn profiles
+- **Facebook Integration**: Automatically adds "Open in Bondery" button on Facebook profiles
+- Content script integration with Bondery web app
 - Background service worker for persistent functionality
 - Custom context menus
 - Settings storage
@@ -24,10 +25,10 @@ A Chrome extension built with **React** and **TypeScript** to enhance the Bondee
 When you visit an Instagram profile page, the extension will:
 
 1. Detect the Instagram username from the URL
-2. Add an "Open in Bondee" button after the profile section (class `.x14vqqas`)
-3. When clicked, it redirects to your Bondee app
+2. Add an "Open in Bondery" button after the profile section (class `.x14vqqas`)
+3. When clicked, it redirects to your Bondery app
 4. Automatically looks up or creates a contact for that Instagram user
-5. Extracts profile name, photo, and saves them to your Bondee contacts
+5. Extracts profile name, photo, and saves them to your Bondery contacts
 
 ## LinkedIn Integration
 
@@ -41,6 +42,18 @@ When you visit a LinkedIn profile page, the extension will:
    - Full name (first, middle, last)
    - Job title
    - Location
+   - Profile photo
+
+## Facebook Integration
+
+When you visit a Facebook profile page, the extension will:
+
+1. Detect the Facebook username from the URL (handles both `/username` and `/profile.php?id=123` formats)
+2. Add an "Open in Bondee" button in the profile actions section
+3. When clicked, it redirects to your Bondee app
+4. Automatically looks up or creates a contact for that Facebook user
+5. Extracts profile information including:
+   - Full name (first, middle, last)
    - Profile photo
 
 ## Development
@@ -117,7 +130,7 @@ This creates a `dist` folder with the compiled extension.
    - Click "Select Folder"
 
 4. **Verify Installation**:
-   - You should see "Bondee Extension" in your extensions list
+   - You should see "Bondery Extension" in your extensions list
    - The extension icon should appear in your Chrome toolbar
    - Status should show "Enabled"
 
@@ -130,7 +143,7 @@ This creates a `dist` folder with the compiled extension.
 
 2. **Test the Popup**:
    - Click the extension icon in the toolbar
-   - Click "Open Bondee" to verify it opens your app
+   - Click "Open Bondery" to verify it opens your app
 
 ### Troubleshooting Loading Issues
 
@@ -140,7 +153,7 @@ This creates a `dist` folder with the compiled extension.
 
 **Permission errors:**
 - Go to `chrome://extensions/`
-- Find "Bondee Extension"
+- Find "Bondery Extension"
 - Click "Details"
 - Ensure all permissions are granted
 
@@ -157,7 +170,7 @@ When making changes:
 2. **Rebuild**: Run `npm run build` or `npm run dev` (for watch mode)
 3. **Reload extension** in Chrome:
    - Go to `chrome://extensions/`
-   - Click the refresh icon (⟳) on the Bondee Extension card
+   - Click the refresh icon (⟳) on the Bondery Extension card
 4. **Refresh the webpage** you're testing on
 
 ### Using Watch Mode
@@ -181,9 +194,9 @@ This automatically rebuilds when you save changes. You still need to:
 
 2. **Test the Popup**:
    - Click the extension icon in Chrome toolbar
-   - Click "Open Bondee" to open the web app
+   - Click "Open Bondery" to open the web app
 
-3. **Test on Bondee**:
+3. **Test on Bondery**:
    - Navigate to `http://localhost:3000` to see the content script in action
    - Look for the "Extension Active" badge that appears briefly
 
@@ -204,7 +217,7 @@ chrome-extension/
 │   │   ├── InstagramButton.tsx  # Button component
 │   │   └── index.tsx      # Content script entry
 │   ├── background.ts      # Background service worker
-│   └── content.ts         # Content script for Bondee pages
+│   └── content.ts         # Content script for Bondery pages
 ├── scripts/
 │   └── generate-icons.js  # SVG to PNG icon generator
 ├── dist/                  # Built extension (generated)
@@ -245,7 +258,7 @@ Edit `public/manifest.json` and add required permissions:
 
 ### Adding Content Script Features
 
-Edit `src/content.ts` to add functionality that runs on Bondee pages.
+Edit `src/content.ts` to add functionality that runs on Bondery pages.
 
 ### Adding Background Tasks
 

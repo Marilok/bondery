@@ -7,6 +7,6 @@ export default getRequestConfig(async () => {
 
   return {
     locale,
-    messages: (await import(`@bondee/translations/${locale}`)).default,
+    messages: (await import(`@bondery/translations/${locale}`)).default,
   };
 });

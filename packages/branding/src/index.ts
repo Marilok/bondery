@@ -5,4 +5,4 @@
  */
 
 export { BondeeIcon, BondeeIconWhite } from "./react/index";
-export { bondeeTheme } from "./theme";
+export { bonderyTheme } from "./theme";

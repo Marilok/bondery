@@ -12,7 +12,7 @@ This allows independent version numbering for each component.
 
 ## Creating a New Release
 
-To create a new release of the Bondee Chrome Extension:
+To create a new release of the Bondery Chrome Extension:
 
 ### 1. Update Version Numbers
 
@@ -71,8 +71,8 @@ The workflow uses these repository variables:
 ## Installation for End Users
 
 Once a release is created, users can:
-1. Go to the [Releases page](https://github.com/YOUR_USERNAME/bondee/releases)
-2. Download the latest `bondee-extension-vX.Y.Z.zip` file
+1. Go to the [Releases page](https://github.com/YOUR_USERNAME/bondery/releases)
+2. Download the latest `bondery-extension-vX.Y.Z.zip` file
 3. Extract the zip file
 4. Open Chrome and go to `chrome://extensions/`
 5. Enable "Developer mode"

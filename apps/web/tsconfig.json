@@ -21,7 +21,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@bondee/helpers": ["../../packages/helpers/src/index.ts"]
+      "@bondery/helpers": ["../../packages/helpers/src/index.ts"]
     }
   },
   "include": [

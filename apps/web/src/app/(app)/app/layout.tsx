@@ -5,7 +5,7 @@ import { getBaseUrl } from "@/lib/config";
 import { getAuthHeaders } from "@/lib/authHeaders";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import * as translations from "@bondee/translations";
+import * as translations from "@bondery/translations";
 
 /**
  * Fetches user data from the internal API.

@@ -1,6 +1,6 @@
 import { LocaleProvider } from "@/components/UserLocaleProvider";
 import { getLocaleFromHeaders } from "@/lib/i18n/getLocaleFromHeaders";
-import * as translations from "@bondee/translations";
+import * as translations from "@bondery/translations";
 
 /**
  * Force dynamic rendering because we use headers() for locale detection

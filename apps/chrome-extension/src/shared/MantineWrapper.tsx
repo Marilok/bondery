@@ -1,13 +1,13 @@
 import React from "react";
 import { MantineProvider } from "@mantine/core";
-import { bondeeTheme } from "@bondee/branding";
+import { bonderyTheme } from "@bondery/branding";
 import "@mantine/core/styles.css";
-import "@bondee/branding/src/styles.css";
+import "@bondery/branding/src/styles.css";
 
 interface MantineWrapperProps {
   children: React.ReactNode;
 }
 
 export function MantineWrapper({ children }: MantineWrapperProps) {
-  return <MantineProvider theme={bondeeTheme}>{children}</MantineProvider>;
+  return <MantineProvider theme={bonderyTheme}>{children}</MantineProvider>;
 }

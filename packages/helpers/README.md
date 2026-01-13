@@ -1,6 +1,6 @@
-# @bondee/helpers
+# @bondery/helpers
 
-Shared helper functions and utilities for the Bondee monorepo.
+Shared helper functions and utilities for the Bondery monorepo.
 
 ## Features
 
@@ -10,7 +10,7 @@ Shared helper functions and utilities for the Bondee monorepo.
 ## Usage
 
 ```typescript
-import { checkEnvVariables } from '@bondee/helpers';
+import { checkEnvVariables } from '@bondery/helpers';
 
 checkEnvVariables({
   environment: 'production',

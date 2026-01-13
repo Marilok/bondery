@@ -36,7 +36,7 @@ jobs:
       - name: Create zip archive
         run: |
           cd apps/chrome-extension/dist
-          zip -r ../../../bondee-extension-${{ github.ref_name }}.zip .
+          zip -r ../../../bondery-extension-${{ github.ref_name }}.zip .
           cd ../../..
 
       - name: Get version from tag
@@ -65,7 +65,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Bondee Extension ${{ steps.get_version.outputs.VERSION }}
+          release_name: Bondery Extension ${{ steps.get_version.outputs.VERSION }}
           body: |
             ## Bondee Chrome Extension Release ${{ steps.get_version.outputs.VERSION }}
 
@@ -87,6 +87,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bondee-extension-${{ github.ref_name }}.zip
-          asset_name: bondee-extension-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_path: ./bondery-extension-${{ github.ref_name }}.zip
+          asset_name: bondery-extension-${{ steps.get_version.outputs.VERSION }}.zip
           asset_content_type: application/zip

@@ -1,6 +1,6 @@
 import { createTheme, MantineTheme } from "@mantine/core";
 
-export const bondeeTheme = createTheme({
+export const bonderyTheme = createTheme({
   cursorType: "pointer",
   primaryColor: "branding-primary",
   defaultRadius: "md",

@@ -226,7 +226,7 @@ function AddContactForm() {
             loading={isSubmitting}
             leftSection={!isSubmitting && <IconUserPlus size={16} />}
           >
-            Add {form.getValues().firstName} to Bondee
+            Add {form.getValues().firstName} to Bondery
           </Button>
         </Group>
       </Stack>

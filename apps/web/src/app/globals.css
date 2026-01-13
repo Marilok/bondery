@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* Scan branding package for Tailwind classes */
-@source "@bondee/branding/**/*.{ts,tsx}";
+@source "@bondery/branding/**/*.{ts,tsx}";
 
 @import "@mantine/core/styles.css";
 @import "@mantine/notifications/styles.css";
@@ -9,6 +9,6 @@
 @import "@mantine/tiptap/styles.css";
 @import "@mantine/dropzone/styles.css";
 @import "flag-icons/css/flag-icons.min.css";
-@import "@bondee/branding/styles";
+@import "@bondery/branding/styles";
 
 /* Additional web-specific styles can be added below */

@@ -36,13 +36,16 @@ const getOrigin = (url: string) => {
 
 const manifest = {
   manifest_version: 3,
-  name: "Bondee Social Integration",
+  name: "Bondery Social Integration",
   version: "0.4.0",
-  description: "Import Instagram and LinkedIn contacts directly to Bondee",
+  description: "Import Instagram, LinkedIn, and Facebook contacts directly to Bondery",
   permissions: ["storage"],
+  default_locale: "en",
   host_permissions: [
     "https://www.instagram.com/*",
+
     "https://www.linkedin.com/*",
+    "https://www.facebook.com/*",
     getOrigin(APP_URL!),
   ],
   icons: {
@@ -58,6 +61,10 @@ const manifest = {
     {
       matches: ["https://www.linkedin.com/*"],
       js: ["linkedin/index.tsx"],
+    },
+    {
+      matches: ["https://www.facebook.com/*"],
+      js: ["facebook/index.tsx"],
     },
   ],
 };

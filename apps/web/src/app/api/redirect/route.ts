@@ -5,6 +5,7 @@ import { validateImageUpload } from "@/lib/imageValidation";
 interface ProfileData {
   instagram?: string;
   linkedin?: string;
+  facebook?: string;
   firstName?: string;
   middleName?: string;
   lastName?: string;
@@ -16,12 +17,12 @@ interface ProfileData {
 export async function POST(request: NextRequest) {
   try {
     const body: ProfileData = await request.json();
-    const { instagram, linkedin, firstName, middleName, lastName, profileImageUrl, title, place } =
+    const { instagram, linkedin, facebook, firstName, middleName, lastName, profileImageUrl, title, place } =
       body;
 
-    if (!instagram && !linkedin) {
+    if (!instagram && !linkedin && !facebook) {
       return NextResponse.json(
-        { error: "Instagram or LinkedIn username is required" },
+        { error: "Instagram, LinkedIn, or Facebook username is required" },
         { status: 400 },
       );
     }
@@ -45,6 +46,8 @@ export async function POST(request: NextRequest) {
       query = query.eq("instagram", instagram);
     } else if (linkedin) {
       query = query.eq("linkedin", linkedin);
+    } else if (facebook) {
+      query = query.eq("facebook", facebook);
     }
 
     const { data: existingContact, error: lookupError } = await query.single();
@@ -82,6 +85,7 @@ export async function POST(request: NextRequest) {
       user_id: string;
       instagram?: string;
       linkedin?: string;
+      facebook?: string;
       first_name: string;
       middle_name?: string;
       last_name?: string;
@@ -91,13 +95,14 @@ export async function POST(request: NextRequest) {
       updated_at: string;
     } = {
       user_id: user.id,
-      first_name: firstName || instagram || linkedin || "Unknown",
+      first_name: firstName || instagram || linkedin || facebook || "Unknown",
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
 
     if (instagram) insertData.instagram = instagram;
     if (linkedin) insertData.linkedin = linkedin;
+    if (facebook) insertData.facebook = facebook;
     if (middleName) insertData.middle_name = middleName;
     if (lastName) insertData.last_name = lastName;
     if (title) insertData.title = title;
@@ -185,6 +190,7 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const instagramUsername = searchParams.get("instagram");
   const linkedinUsername = searchParams.get("linkedin");
+  const facebookUsername = searchParams.get("facebook");
   const firstName = searchParams.get("firstName");
   const middleName = searchParams.get("middleName");
   const lastName = searchParams.get("lastName");
@@ -192,9 +198,9 @@ export async function GET(request: NextRequest) {
   const title = searchParams.get("title");
   const place = searchParams.get("place");
 
-  if (!instagramUsername && !linkedinUsername) {
+  if (!instagramUsername && !linkedinUsername && !facebookUsername) {
     return NextResponse.json(
-      { error: "Instagram or LinkedIn username is required" },
+      { error: "Instagram, LinkedIn, or Facebook username is required" },
       { status: 400 },
     );
   }
@@ -223,6 +229,8 @@ export async function GET(request: NextRequest) {
       query = query.eq("instagram", instagramUsername);
     } else if (linkedinUsername) {
       query = query.eq("linkedin", linkedinUsername);
+    } else if (facebookUsername) {
+      query = query.eq("facebook", facebookUsername);
     }
 
     const { data: existingContact, error: lookupError } = await query.single();
@@ -260,6 +268,7 @@ export async function GET(request: NextRequest) {
       user_id: string;
       instagram?: string;
       linkedin?: string;
+      facebook?: string;
       first_name: string;
       middle_name?: string;
       last_name?: string;
@@ -269,13 +278,14 @@ export async function GET(request: NextRequest) {
       updated_at: string;
     } = {
       user_id: user.id,
-      first_name: firstName || instagramUsername || linkedinUsername || "Unknown",
+      first_name: firstName || instagramUsername || linkedinUsername || facebookUsername || "Unknown",
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
 
     if (instagramUsername) insertData.instagram = instagramUsername;
     if (linkedinUsername) insertData.linkedin = linkedinUsername;
+    if (facebookUsername) insertData.facebook = facebookUsername;
     if (middleName) insertData.middle_name = middleName;
     if (lastName) insertData.last_name = lastName;
     if (title) insertData.title = title;

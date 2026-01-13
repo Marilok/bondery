@@ -1,4 +1,9 @@
 
+# UI resources
+- https://www.titanium.dev/ui/mantine/blocks/heros
+- https://mantinehub.com/blocks/hero
+- https://mantine-tweaker.pages.dev/
+
 # Tasks
 ## 
 
@@ -23,7 +28,7 @@ Code quality
 
 LinkedIn extension
 - create Oathserver to login the user with his account to the extension
-- add button on IG to open in Bondee (it should find the contact based on the username (what bout username changes?) or  create a new contact with the info from ig)
+- add button on IG to open in Bondery (it should find the contact based on the username (what bout username changes?) or  create a new contact with the info from ig)
 - the same button for FB
 - the same button for LinkedIn
 

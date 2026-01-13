@@ -16,13 +16,13 @@ function getLinkedInUsername(): string | null {
 }
 
 // Find the target section and inject the button
-function injectBondeeButton() {
+function injectBonderyButton() {
   const username = getLinkedInUsername();
 
-  console.log("Bondee LinkedIn: Attempting to inject button", { username });
+  console.log("Bondery LinkedIn: Attempting to inject button", { username });
 
   if (!username) {
-    console.log("Bondee LinkedIn: No username found in URL");
+    console.log("Bondery LinkedIn: No username found in URL");
     return;
   }
 
@@ -30,11 +30,11 @@ function injectBondeeButton() {
     "._50293d6d._3ef9a4ba._1937a38e._55f344ac.a66c3ac6.c67a4f8b._528d5339._08542c3e.f7152e2e._58ae5fa6._17943a0d._951ee4c0",
   );
 
-  console.log("Bondee LinkedIn: Target section found:", !!targetSection, targetSection);
+  console.log("Bondery LinkedIn: Target section found:", !!targetSection, targetSection);
 
   if (!targetSection) {
     console.log(
-      "Bondee LinkedIn: Target section not found. Searching for alternative selectors...",
+      "Bondery LinkedIn: Target section not found. Searching for alternative selectors...",
     );
     // Try alternative selectors
     const alternatives = [
@@ -49,7 +49,7 @@ function injectBondeeButton() {
       const altSection = document.querySelector(selector);
       if (altSection) {
         console.log(
-          `Bondee LinkedIn: Found alternative section with selector: ${selector}`,
+          `Bondery LinkedIn: Found alternative section with selector: ${selector}`,
           altSection,
         );
       }
@@ -58,13 +58,13 @@ function injectBondeeButton() {
   }
 
   // Check if button already exists
-  if (document.querySelector("#bondee-li-button-root")) {
+  if (document.querySelector("#bondery-li-button-root")) {
     return;
   }
 
   // Create container for React component
   const container = document.createElement("div");
-  container.id = "bondee-li-button-root";
+  container.id = "bondery-li-button-root";
   targetSection.appendChild(container);
 
   // Render React component
@@ -77,15 +77,15 @@ function injectBondeeButton() {
     </StrictMode>,
   );
 
-  console.log("Bondee Extension: Button injected successfully on LinkedIn");
+  console.log("Bondery Extension: Button injected successfully on LinkedIn");
 }
 
 // Observe DOM changes
 function setupObserver() {
   const observer = new MutationObserver(() => {
     const username = getLinkedInUsername();
-    if (username && !document.querySelector("#bondee-li-button-root")) {
-      injectBondeeButton();
+    if (username && !document.querySelector("#bondery-li-button-root")) {
+      injectBonderyButton();
     }
   });
 
@@ -104,9 +104,9 @@ function init() {
     return;
   }
 
-  console.log("Bondee Extension: Initializing LinkedIn integration");
+  console.log("Bondery Extension: Initializing LinkedIn integration");
 
-  injectBondeeButton();
+  injectBonderyButton();
   setupObserver();
 
   setTimeout(() => {
@@ -119,7 +119,7 @@ function init() {
     if (window.location.href !== lastUrl) {
       lastUrl = window.location.href;
       setTimeout(() => {
-        injectBondeeButton();
+        injectBonderyButton();
       }, 1000);
     }
   }, 500);

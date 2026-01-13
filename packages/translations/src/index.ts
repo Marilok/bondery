@@ -1,5 +1,5 @@
 /**
- * Bondee translations package
+ * Bondery translations package
  *
  * Exports translation files for internationalization
  */

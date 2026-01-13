@@ -52,16 +52,9 @@ import dynamic from "next/dynamic";
 import ContactsTable from "@/components/ContactsTable";
 import NetworkGraph from "@/components/NetworkGraph";
 import DateWithNotification from "@/components/DateWithNotification";
-import {
-  extractUsername,
-  createSocialMediaUrl,
-} from "@/lib/socialMediaHelpers";
+import { extractUsername, createSocialMediaUrl } from "@/lib/socialMediaHelpers";
 import { INPUT_MAX_LENGTHS, LIMITS } from "@/lib/config";
-import {
-  countryCodes,
-  parsePhoneNumber,
-  combinePhoneNumber,
-} from "@/lib/phoneHelpers";
+import { countryCodes, parsePhoneNumber, combinePhoneNumber } from "@/lib/phoneHelpers";
 import { formatContactName } from "@/lib/nameHelpers";
 import type { Contact } from "@/lib/mockData";
 import Image from "next/image";
@@ -86,9 +79,7 @@ export default function PersonClient({
   const router = useRouter();
 
   const [contact, setContact] = useState<Contact>(initialContact);
-  const [connectedContacts, setConnectedContacts] = useState<Contact[]>(
-    initialConnectedContacts
-  );
+  const [connectedContacts, setConnectedContacts] = useState<Contact[]>(initialConnectedContacts);
   const [savingField, setSavingField] = useState<string | null>(null);
   const [editedValues, setEditedValues] = useState<{
     [key: string]: string;
@@ -151,7 +142,7 @@ export default function PersonClient({
             date: new Date(d.date),
             name: d.name,
             notify: d.notify,
-          }))
+          })),
         );
       } else {
         setImportantDates([]);
@@ -225,10 +216,7 @@ export default function PersonClient({
     }
 
     // Validation
-    if (
-      field === "firstName" &&
-      (!processedValue || processedValue.trim() === "")
-    ) {
+    if (field === "firstName" && (!processedValue || processedValue.trim() === "")) {
       notifications.show({
         title: "Validation Error",
         message: "First name is required",
@@ -269,9 +257,7 @@ export default function PersonClient({
 
       notifications.show({
         title: "Success",
-        message: `${
-          field.charAt(0).toUpperCase() + field.slice(1)
-        } updated successfully`,
+        message: `${field.charAt(0).toUpperCase() + field.slice(1)} updated successfully`,
         color: "green",
         icon: <IconCheck size={18} />,
       });
@@ -343,10 +329,7 @@ export default function PersonClient({
       });
       return;
     }
-    setImportantDates([
-      ...importantDates,
-      { date: null, name: "", notify: false },
-    ]);
+    setImportantDates([...importantDates, { date: null, name: "", notify: false }]);
   };
 
   const handleRemoveImportantDate = (index: number) => {
@@ -393,10 +376,9 @@ export default function PersonClient({
       ),
       children: (
         <Text size="sm">
-          Are you sure you want to delete{" "}
-          <strong>{formatContactName(contact)}</strong>? This person&apos;s
-          data, mentions, and related information will be deleted. And this
-          action cannot be restored.
+          Are you sure you want to delete <strong>{formatContactName(contact)}</strong>? This
+          person&apos;s data, mentions, and related information will be deleted. And this action
+          cannot be restored.
         </Text>
       ),
       labels: { confirm: "Yes, delete", cancel: "No, cancel" },
@@ -464,20 +446,13 @@ export default function PersonClient({
 
           <Menu shadow="md" width={200}>
             <Menu.Target>
-              <Button
-                variant="default"
-                leftSection={<IconDotsVertical size={18} />}
-              >
+              <Button variant="default" leftSection={<IconDotsVertical size={18} />}>
                 Actions
               </Button>
             </Menu.Target>
 
             <Menu.Dropdown>
-              <MenuItem
-                color="red"
-                leftSection={<IconTrash size={16} />}
-                onClick={openDeleteModal}
-              >
+              <MenuItem color="red" leftSection={<IconTrash size={16} />} onClick={openDeleteModal}>
                 Delete Contact
               </MenuItem>
             </Menu.Dropdown>
@@ -500,9 +475,7 @@ export default function PersonClient({
                       <TextInput
                         placeholder="First name"
                         value={editedValues.firstName || ""}
-                        onChange={(e) =>
-                          handleChange("firstName", e.target.value)
-                        }
+                        onChange={(e) => handleChange("firstName", e.target.value)}
                         onFocus={() => setFocusedField("firstName")}
                         onBlur={() => {
                           setFocusedField(null);
@@ -518,8 +491,7 @@ export default function PersonClient({
                             <Loader size="xs" />
                           ) : focusedField === "firstName" ? (
                             <Text size="10px" c="dimmed">
-                              {editedValues.firstName?.length || 0}/
-                              {INPUT_MAX_LENGTHS.firstName}
+                              {editedValues.firstName?.length || 0}/{INPUT_MAX_LENGTHS.firstName}
                             </Text>
                           ) : null
                         }
@@ -528,9 +500,7 @@ export default function PersonClient({
                       <TextInput
                         placeholder="Middle name"
                         value={editedValues.middleName || ""}
-                        onChange={(e) =>
-                          handleChange("middleName", e.target.value)
-                        }
+                        onChange={(e) => handleChange("middleName", e.target.value)}
                         onFocus={() => setFocusedField("middleName")}
                         onBlur={() => {
                           setFocusedField(null);
@@ -546,8 +516,7 @@ export default function PersonClient({
                             <Loader size="xs" />
                           ) : focusedField === "middleName" ? (
                             <Text size="10px" c="dimmed">
-                              {editedValues.middleName?.length || 0}/
-                              {INPUT_MAX_LENGTHS.middleName}
+                              {editedValues.middleName?.length || 0}/{INPUT_MAX_LENGTHS.middleName}
                             </Text>
                           ) : null
                         }
@@ -556,9 +525,7 @@ export default function PersonClient({
                       <TextInput
                         placeholder="Last name"
                         value={editedValues.lastName || ""}
-                        onChange={(e) =>
-                          handleChange("lastName", e.target.value)
-                        }
+                        onChange={(e) => handleChange("lastName", e.target.value)}
                         onFocus={() => setFocusedField("lastName")}
                         onBlur={() => {
                           setFocusedField(null);
@@ -574,8 +541,7 @@ export default function PersonClient({
                             <Loader size="xs" />
                           ) : focusedField === "lastName" ? (
                             <Text size="10px" c="dimmed">
-                              {editedValues.lastName?.length || 0}/
-                              {INPUT_MAX_LENGTHS.lastName}
+                              {editedValues.lastName?.length || 0}/{INPUT_MAX_LENGTHS.lastName}
                             </Text>
                           ) : null
                         }
@@ -615,8 +581,7 @@ export default function PersonClient({
                       <Loader size="xs" />
                     ) : focusedField === "title" ? (
                       <Text size="10px" c="dimmed">
-                        {editedValues.title?.length || 0}/
-                        {INPUT_MAX_LENGTHS.title}
+                        {editedValues.title?.length || 0}/{INPUT_MAX_LENGTHS.title}
                       </Text>
                     ) : null
                   }
@@ -635,9 +600,7 @@ export default function PersonClient({
                     minWidth: 200,
                     maxWidth: "100%",
                   }}
-                  rightSection={
-                    savingField === "place" ? <Loader size="xs" /> : null
-                  }
+                  rightSection={savingField === "place" ? <Loader size="xs" /> : null}
                   disabled={savingField === "place"}
                 />
               </Stack>
@@ -669,8 +632,7 @@ export default function PersonClient({
                     <Loader size="xs" />
                   ) : focusedField === "description" ? (
                     <Text size="10px" c="dimmed">
-                      {editedValues.description?.length || 0}/
-                      {INPUT_MAX_LENGTHS.description}
+                      {editedValues.description?.length || 0}/{INPUT_MAX_LENGTHS.description}
                     </Text>
                   ) : null
                 }
@@ -755,18 +717,14 @@ export default function PersonClient({
                               value: country.dialCode,
                               label: country.dialCode,
                             },
-                          ])
-                        ).values()
+                          ]),
+                        ).values(),
                       )}
                       renderOption={({ option }) => {
-                        const country = countryCodes.find(
-                          (c) => c.dialCode === option.value
-                        );
+                        const country = countryCodes.find((c) => c.dialCode === option.value);
                         return (
                           <Group gap="xs">
-                            <span
-                              className={`fi fi-${country?.flag || "us"}`}
-                            />
+                            <span className={`fi fi-${country?.flag || "us"}`} />
                             <span>{option.value}</span>
                           </Group>
                         );
@@ -774,8 +732,7 @@ export default function PersonClient({
                       leftSection={
                         <span
                           className={`fi fi-${
-                            countryCodes.find((c) => c.dialCode === phonePrefix)
-                              ?.flag || "us"
+                            countryCodes.find((c) => c.dialCode === phonePrefix)?.flag || "us"
                           }`}
                         />
                       }
@@ -789,9 +746,7 @@ export default function PersonClient({
                       onChange={(e) => handleChange("phone", e.target.value)}
                       onBlur={() => handleBlur("phone")}
                       style={{ flex: 1 }}
-                      rightSection={
-                        savingField === "phone" ? <Loader size="xs" /> : null
-                      }
+                      rightSection={savingField === "phone" ? <Loader size="xs" /> : null}
                       disabled={savingField === "phone"}
                     />
                   </Group>
@@ -822,18 +777,14 @@ export default function PersonClient({
                               value: country.dialCode,
                               label: country.dialCode,
                             },
-                          ])
-                        ).values()
+                          ]),
+                        ).values(),
                       )}
                       renderOption={({ option }) => {
-                        const country = countryCodes.find(
-                          (c) => c.dialCode === option.value
-                        );
+                        const country = countryCodes.find((c) => c.dialCode === option.value);
                         return (
                           <Group gap="xs">
-                            <span
-                              className={`fi fi-${country?.flag || "us"}`}
-                            />
+                            <span className={`fi fi-${country?.flag || "us"}`} />
                             <span>{option.value}</span>
                           </Group>
                         );
@@ -841,9 +792,7 @@ export default function PersonClient({
                       leftSection={
                         <span
                           className={`fi fi-${
-                            countryCodes.find(
-                              (c) => c.dialCode === whatsappPrefix
-                            )?.flag || "us"
+                            countryCodes.find((c) => c.dialCode === whatsappPrefix)?.flag || "us"
                           }`}
                         />
                       }
@@ -857,9 +806,7 @@ export default function PersonClient({
                       onChange={(e) => handleChange("whatsapp", e.target.value)}
                       onBlur={() => handleBlur("whatsapp")}
                       style={{ flex: 1 }}
-                      rightSection={
-                        savingField === "whatsapp" ? <Loader size="xs" /> : null
-                      }
+                      rightSection={savingField === "whatsapp" ? <Loader size="xs" /> : null}
                       disabled={savingField === "whatsapp"}
                     />
                   </Group>
@@ -871,20 +818,12 @@ export default function PersonClient({
                       component="a"
                       href={
                         contact.signal
-                          ? `signal://signal.me/#p/${contact.signal.replace(
-                              /\D/g,
-                              ""
-                            )}`
+                          ? `signal://signal.me/#p/${contact.signal.replace(/\D/g, "")}`
                           : undefined
                       }
                       disabled={!contact.signal}
                     >
-                      <Image
-                        src="/icons/signal.svg"
-                        alt="Signal"
-                        width={18}
-                        height={18}
-                      />
+                      <Image src="/icons/signal.svg" alt="Signal" width={18} height={18} />
                     </ActionIcon>
                     <Select
                       value={signalPrefix}
@@ -897,18 +836,14 @@ export default function PersonClient({
                               value: country.dialCode,
                               label: country.dialCode,
                             },
-                          ])
-                        ).values()
+                          ]),
+                        ).values(),
                       )}
                       renderOption={({ option }) => {
-                        const country = countryCodes.find(
-                          (c) => c.dialCode === option.value
-                        );
+                        const country = countryCodes.find((c) => c.dialCode === option.value);
                         return (
                           <Group gap="xs">
-                            <span
-                              className={`fi fi-${country?.flag || "us"}`}
-                            />
+                            <span className={`fi fi-${country?.flag || "us"}`} />
                             <span>{option.value}</span>
                           </Group>
                         );
@@ -916,9 +851,7 @@ export default function PersonClient({
                       leftSection={
                         <span
                           className={`fi fi-${
-                            countryCodes.find(
-                              (c) => c.dialCode === signalPrefix
-                            )?.flag || "us"
+                            countryCodes.find((c) => c.dialCode === signalPrefix)?.flag || "us"
                           }`}
                         />
                       }
@@ -932,9 +865,7 @@ export default function PersonClient({
                       onChange={(e) => handleChange("signal", e.target.value)}
                       onBlur={() => handleBlur("signal")}
                       style={{ flex: 1 }}
-                      rightSection={
-                        savingField === "signal" ? <Loader size="xs" /> : null
-                      }
+                      rightSection={savingField === "signal" ? <Loader size="xs" /> : null}
                       disabled={savingField === "signal"}
                     />
                   </Group>
@@ -944,9 +875,7 @@ export default function PersonClient({
                       variant="light"
                       color="red"
                       component="a"
-                      href={
-                        contact.email ? `mailto:${contact.email}` : undefined
-                      }
+                      href={contact.email ? `mailto:${contact.email}` : undefined}
                       disabled={!contact.email}
                     >
                       <IconMail size={18} />
@@ -957,9 +886,7 @@ export default function PersonClient({
                       onChange={(e) => handleChange("email", e.target.value)}
                       onBlur={() => handleBlur("email")}
                       style={{ flex: 1 }}
-                      rightSection={
-                        savingField === "email" ? <Loader size="xs" /> : null
-                      }
+                      rightSection={savingField === "email" ? <Loader size="xs" /> : null}
                       disabled={savingField === "email"}
                     />
                   </Group>
@@ -988,9 +915,7 @@ export default function PersonClient({
                       onChange={(e) => handleChange("linkedin", e.target.value)}
                       onBlur={() => handleBlur("linkedin")}
                       style={{ flex: 1 }}
-                      rightSection={
-                        savingField === "linkedin" ? <Loader size="xs" /> : null
-                      }
+                      rightSection={savingField === "linkedin" ? <Loader size="xs" /> : null}
                       disabled={savingField === "linkedin"}
                     />
                   </Group>
@@ -1012,9 +937,7 @@ export default function PersonClient({
                       onChange={(e) => handleChange("website", e.target.value)}
                       onBlur={() => handleBlur("website")}
                       style={{ flex: 1 }}
-                      rightSection={
-                        savingField === "website" ? <Loader size="xs" /> : null
-                      }
+                      rightSection={savingField === "website" ? <Loader size="xs" /> : null}
                       disabled={savingField === "website"}
                     />
                   </Group>
@@ -1037,16 +960,10 @@ export default function PersonClient({
                     <TextInput
                       placeholder="Instagram username or URL"
                       value={editedValues.instagram || ""}
-                      onChange={(e) =>
-                        handleChange("instagram", e.target.value)
-                      }
+                      onChange={(e) => handleChange("instagram", e.target.value)}
                       onBlur={() => handleBlur("instagram")}
                       style={{ flex: 1 }}
-                      rightSection={
-                        savingField === "instagram" ? (
-                          <Loader size="xs" />
-                        ) : null
-                      }
+                      rightSection={savingField === "instagram" ? <Loader size="xs" /> : null}
                       disabled={savingField === "instagram"}
                     />
                   </Group>
@@ -1072,9 +989,7 @@ export default function PersonClient({
                       onChange={(e) => handleChange("facebook", e.target.value)}
                       onBlur={() => handleBlur("facebook")}
                       style={{ flex: 1 }}
-                      rightSection={
-                        savingField === "facebook" ? <Loader size="xs" /> : null
-                      }
+                      rightSection={savingField === "facebook" ? <Loader size="xs" /> : null}
                       disabled={savingField === "facebook"}
                     />
                   </Group>
@@ -1148,9 +1063,7 @@ export default function PersonClient({
                   }, 500);
                 }
               }}
-              saving={
-                savingField === "birthday" || savingField === "notifyBirthday"
-              }
+              saving={savingField === "birthday" || savingField === "notifyBirthday"}
               focusedField={focusedField}
               onFocus={setFocusedField}
               onBlur={setFocusedField}
@@ -1165,11 +1078,7 @@ export default function PersonClient({
                   Important Dates
                 </Text>
                 {importantDates.length < LIMITS.maxImportantDates && (
-                  <Button
-                    size="xs"
-                    variant="light"
-                    onClick={handleAddImportantDate}
-                  >
+                  <Button size="xs" variant="light" onClick={handleAddImportantDate}>
                     Add Date
                   </Button>
                 )}
@@ -1186,12 +1095,8 @@ export default function PersonClient({
                           dateValue={importantDate.date}
                           nameValue={importantDate.name}
                           notifyValue={importantDate.notify}
-                          onDateChange={(date) =>
-                            handleImportantDateChange(index, date)
-                          }
-                          onNameChange={(name) =>
-                            handleImportantDateNameChange(index, name)
-                          }
+                          onDateChange={(date) => handleImportantDateChange(index, date)}
+                          onNameChange={(name) => handleImportantDateNameChange(index, name)}
                           onNotifyChange={(notify) =>
                             handleImportantDateNotifyChange(index, notify)
                           }
@@ -1257,10 +1162,7 @@ export default function PersonClient({
                 }}
               >
                 <MapComponent
-                  contacts={[
-                    contact,
-                    ...connectedContacts.filter((c) => c.position),
-                  ]}
+                  contacts={[contact, ...connectedContacts.filter((c) => c.position)]}
                   focusContactId={contact.id}
                 />
               </div>
@@ -1294,14 +1196,7 @@ export default function PersonClient({
 
                 <ContactsTable
                   contacts={connectedContacts}
-                  visibleColumns={[
-                    "avatar",
-                    "name",
-                    "title",
-                    "place",
-                    "shortNote",
-                    "social",
-                  ]}
+                  visibleColumns={["avatar", "name", "title", "place", "shortNote", "social"]}
                   showSelection={false}
                 />
               </Stack>

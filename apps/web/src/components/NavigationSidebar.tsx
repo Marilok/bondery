@@ -43,10 +43,10 @@ export function NavigationSidebarContent({ userName, avatarUrl }: NavigationSide
     <>
       {/* Branding Card */}
       <Group mb="md">
-        <Image src="/logo.svg" alt="Bondee logo" width={40} height={40} priority />
+        <Image src="/logo.svg" alt="Bondery logo" width={40} height={40} priority />
         <Box style={{ flex: 1 }}>
           <Text size="sm" fw={600}>
-            Bondee
+            Bondery
           </Text>
           <Text size="xs" c="dimmed">
             Build bonds that last
