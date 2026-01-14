@@ -1,10 +1,9 @@
 "use client";
 
-import { BonderyIcon } from "@bondery/branding";
 import { Anchor, Box, Divider, Flex, Paper, Text } from "@mantine/core";
 import { IconBrandGithubFilled, IconBrandLinkedinFilled } from "@tabler/icons-react";
-import Link from "next/link";
 import type { ReactNode } from "react";
+import { Logo } from "@/components/Logo";
 
 type LinkItem = {
   title: ReactNode;
@@ -99,14 +98,7 @@ export function Footer() {
         </Flex>
         <Divider my="xl" />
         <Flex justify="space-between" align="center" px="md">
-          <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
-            <Flex align="center" gap="xs">
-              <BonderyIcon width={28} height={28} />
-              <Text fw={700} size="md" c="white">
-                Bondery
-              </Text>
-            </Flex>
-          </Link>
+          <Logo iconSize={28} textSize="md" />
           <Text size="xs" c="dimmed" ta="right">
             Made with 💜 for meaningful connections
           </Text>

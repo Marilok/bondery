@@ -1,10 +1,10 @@
 "use client";
 
-import { BonderyIcon } from "@bondery/branding";
-import { Anchor, Box, Button, Flex, Group, Paper, Text } from "@mantine/core";
+import { Anchor, Box, Button, Flex, Group, Paper } from "@mantine/core";
 import { IconBrandGithub, IconTopologyStar } from "@tabler/icons-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Logo } from "@/components/Logo";
 
 const navLinks = [
   { label: "Features", href: "#features" },
@@ -26,14 +26,7 @@ export function Header() {
       <Paper maw={1440} mx={{ base: "xs", md: "xl" }} shadow="md" py={"md"} px={"xs"}>
         <Flex justify="space-between" align="center" h="100%" px="md">
           {/* Logo */}
-          <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
-            <Flex align="center" gap="xs">
-              <BonderyIcon width={32} height={32} />
-              <Text fw={700} size="lg" c="white">
-                Bondery
-              </Text>
-            </Flex>
-          </Link>
+          <Logo iconSize={32} textSize="lg" />
 
           {/* Navigation Links */}
           <Group gap="xl" visibleFrom="sm">

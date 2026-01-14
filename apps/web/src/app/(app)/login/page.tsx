@@ -1,27 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Container,
-  Paper,
-  Title,
-  Text,
-  Button,
-  Stack,
-  Center,
-  Box,
-  Anchor,
-} from "@mantine/core";
-import {
-  IconBrandGithubFilled,
-  IconBrandLinkedin,
-  IconX,
-} from "@tabler/icons-react";
+import { Container, Paper, Text, Button, Stack, Anchor, Center, Space } from "@mantine/core";
+import { IconBrandGithubFilled, IconBrandLinkedin, IconX } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 import { createBrowswerSupabaseClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { INTEGRATION_PROVIDERS } from "@/lib/config";
+import { Logo } from "@/components/Logo";
 
 export default function LoginPage() {
   const t = useTranslations("LoginPage");
@@ -59,8 +46,7 @@ export default function LoginPage() {
     } catch (err) {
       notifications.show({
         title: t("UnexpectedError"),
-        message:
-          err instanceof Error ? err.message : t("UnexpectedErrorMessage"),
+        message: err instanceof Error ? err.message : t("UnexpectedErrorMessage"),
         color: "red",
         icon: <IconX size={18} />,
       });
@@ -70,56 +56,70 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <Container size={420}>
-        <Paper withBorder shadow="md" p="md">
-          <Stack gap="md">
-            <Title order={2} ta="center">
-              {t("Title")}
-            </Title>
-            <Text c="dimmed" size="sm" ta="center">
-              {t("Description")}
-            </Text>
+    <div className="flex min-h-screen items-center justify-center px-4">
+      <Container size={460} p={0}>
+        <Stack align="center">
+          {/* Logo Section */}
+          <Logo iconSize={56} textSize="2rem" href="/" />
+          <Space />
 
-            <Stack gap="sm">
-              {activeProviders.map((provider) => {
-                const Icon = getProviderIcon(provider.icon);
-                return (
-                  <Button
-                    key={provider.provider}
-                    fullWidth
-                    leftSection={<Icon size={20} />}
-                    onClick={() =>
-                      handleOAuthLogin(
-                        provider.providerKey as "github" | "linkedin_oidc"
-                      )
-                    }
-                    loading={loading}
-                    disabled={loading}
-                    style={{ backgroundColor: provider.backgroundColor }}
-                  >
-                    {t("ContinueWith", { provider: provider.displayName })}
-                  </Button>
-                );
-              })}
+          {/* Login Card */}
+          <Paper
+            withBorder
+            shadow="lg"
+            p="xl"
+            radius="lg"
+            w="100%"
+            style={{
+              backgroundColor:
+                "light-dark(var(--mantine-color-white), var(--mantine-color-dark-6))",
+            }}
+          >
+            <Stack gap="md">
+              <Text size="md" c="dimmed" ta="center">
+                {t("Description")}
+              </Text>
+
+              <Stack gap="xs">
+                {activeProviders.map((provider) => {
+                  const Icon = getProviderIcon(provider.icon);
+                  return (
+                    <Button
+                      key={provider.provider}
+                      fullWidth
+                      leftSection={<Icon size={20} />}
+                      onClick={() =>
+                        handleOAuthLogin(provider.providerKey as "github" | "linkedin_oidc")
+                      }
+                      size="lg"
+                      loading={loading}
+                      disabled={loading}
+                      style={{ backgroundColor: provider.backgroundColor }}
+                    >
+                      {t("ContinueWith", { provider: provider.displayName })}
+                    </Button>
+                  );
+                })}
+              </Stack>
             </Stack>
+          </Paper>
 
-            <Text c="dimmed" size="xs" ta="center">
-              {t.rich("TermsText", {
-                termsLink: (chunks) => (
-                  <Anchor href="/terms" component={Link}>
-                    {chunks}
-                  </Anchor>
-                ),
-                privacyLink: (chunks) => (
-                  <Anchor component={Link} href="/privacy">
-                    {chunks}
-                  </Anchor>
-                ),
-              })}
-            </Text>
-          </Stack>
-        </Paper>
+          {/* Terms Section */}
+          <Text c="dimmed" size="xs" ta="center" maw={380}>
+            {t.rich("TermsText", {
+              termsLink: (chunks) => (
+                <Anchor href="/terms" component={Link} size="xs">
+                  {chunks}
+                </Anchor>
+              ),
+              privacyLink: (chunks) => (
+                <Anchor component={Link} href="/privacy" size="xs">
+                  {chunks}
+                </Anchor>
+              ),
+            })}
+          </Text>
+        </Stack>
       </Container>
     </div>
   );
