@@ -1,2 +1,2 @@
-export { BondeeIcon } from "./BondeeIcon";
-export { BondeeIconWhite } from "./BondeeIconWhite";
+export { BonderyIcon } from "./BonderyIcon";
+export { BonderyIconWhite } from "./BonderyIconWhite";

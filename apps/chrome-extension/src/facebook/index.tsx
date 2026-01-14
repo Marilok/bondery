@@ -104,7 +104,7 @@ function init() {
   setupObserver();
 
   setTimeout(() => {
-    injectBondeeButton();
+    injectBonderyButton();
   }, 2000);
 
   // Listen for URL changes

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@mantine/core";
 import { config } from "../config";
-import { BondeeIconWhite } from "@bondery/branding";
+import { BonderyIconWhite } from "@bondery/branding";
 import { sanitizeName } from "../utils/nameHelpers";
 
 interface LinkedInButtonProps {
@@ -252,7 +252,7 @@ const LinkedInButton: React.FC<LinkedInButtonProps> = ({ username }) => {
       loading={isLoading}
       fullWidth
       size="xl"
-      leftSection={<BondeeIconWhite width={16} height={16} />}
+      leftSection={<BonderyIconWhite width={16} height={16} />}
     >
       Open in Bondery
     </Button>

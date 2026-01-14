@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@mantine/core";
 import { config } from "../config";
-import { BondeeIconWhite } from "@bondery/branding";
+import { BonderyIconWhite } from "@bondery/branding";
 import { sanitizeName } from "../utils/nameHelpers";
 
 interface InstagramButtonProps {
@@ -100,7 +100,7 @@ const InstagramButton: React.FC<InstagramButtonProps> = ({ username }) => {
       onClick={handleClick}
       loading={isLoading}
       fullWidth
-      leftSection={<BondeeIconWhite width={16} height={16} />}
+      leftSection={<BonderyIconWhite width={16} height={16} />}
     >
       Open in Bondery
     </Button>

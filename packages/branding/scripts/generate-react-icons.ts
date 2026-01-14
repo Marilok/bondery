@@ -3,11 +3,15 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
 
 const svgFiles = [
-  { input: "src/assets/icon.svg", output: "src/react/BondeeIcon.tsx", componentName: "BondeeIcon" },
+  {
+    input: "src/assets/icon.svg",
+    output: "src/react/BonderyIcon.tsx",
+    componentName: "BonderyIcon",
+  },
   {
     input: "src/assets/icon-white.svg",
-    output: "src/react/BondeeIconWhite.tsx",
-    componentName: "BondeeIconWhite",
+    output: "src/react/BonderyIconWhite.tsx",
+    componentName: "BonderyIconWhite",
   },
 ];
 

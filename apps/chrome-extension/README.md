@@ -35,8 +35,8 @@ When you visit an Instagram profile page, the extension will:
 When you visit a LinkedIn profile page, the extension will:
 
 1. Detect the LinkedIn username from the URL
-2. Add an "Open in Bondee" button in the profile actions section
-3. When clicked, it redirects to your Bondee app
+2. Add an "Open in Bondery" button in the profile actions section
+3. When clicked, it redirects to your Bondery app
 4. Automatically looks up or creates a contact for that LinkedIn user
 5. Extracts profile information including:
    - Full name (first, middle, last)
@@ -49,8 +49,8 @@ When you visit a LinkedIn profile page, the extension will:
 When you visit a Facebook profile page, the extension will:
 
 1. Detect the Facebook username from the URL (handles both `/username` and `/profile.php?id=123` formats)
-2. Add an "Open in Bondee" button in the profile actions section
-3. When clicked, it redirects to your Bondee app
+2. Add an "Open in Bondery" button in the profile actions section
+3. When clicked, it redirects to your Bondery app
 4. Automatically looks up or creates a contact for that Facebook user
 5. Extracts profile information including:
    - Full name (first, middle, last)
@@ -138,7 +138,7 @@ This creates a `dist` folder with the compiled extension.
 
 1. **Test on Instagram**:
    - Visit any Instagram profile (e.g., `https://www.instagram.com/instagram/`)
-   - Look for the "Open in Bondee" button in the profile section
+   - Look for the "Open in Bondery" button in the profile section
    - Click it to test the integration
 
 2. **Test the Popup**:
@@ -189,7 +189,7 @@ This automatically rebuilds when you save changes. You still need to:
 
 1. **Test on Instagram**:
    - Visit any Instagram profile (e.g., `https://www.instagram.com/instagram/`)
-   - Look for the "Open in Bondee" button in the profile section
+   - Look for the "Open in Bondery" button in the profile section
    - Click it to test the integration
 
 2. **Test the Popup**:

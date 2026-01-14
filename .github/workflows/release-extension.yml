@@ -67,10 +67,10 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Bondery Extension ${{ steps.get_version.outputs.VERSION }}
           body: |
-            ## Bondee Chrome Extension Release ${{ steps.get_version.outputs.VERSION }}
+            ## Bondery Chrome Extension Release ${{ steps.get_version.outputs.VERSION }}
 
             ### Installation Instructions
-            1. Download the `bondee-extension-${{ steps.get_version.outputs.VERSION }}.zip` file below
+            1. Download the `bondery-extension-${{ steps.get_version.outputs.VERSION }}.zip` file below
             2. Extract the zip file to a folder
             3. Open Chrome and navigate to `chrome://extensions/`
             4. Enable "Developer mode" in the top right corner
