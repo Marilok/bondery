@@ -22,7 +22,9 @@ export default async function Image() {
         justifyContent: "center",
       }}
     >
-      <BonderyLogotypeBlack width={600} />
+      {/* // ! check the dimensions of the SVG file before updating opengraph-image.tsx */}
+
+      <BonderyLogotypeBlack width={800} height={236} />
     </div>,
     {
       ...size,
