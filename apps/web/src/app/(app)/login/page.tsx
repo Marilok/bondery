@@ -63,7 +63,7 @@ export default function LoginPage() {
           <Logo iconSize={56} textSize="2rem" href="/" />
           <Space />
 
-          {/* Login Card */}
+          {/* Mobile Not Available Message */}
           <Paper
             withBorder
             shadow="lg"
@@ -74,6 +74,33 @@ export default function LoginPage() {
               backgroundColor:
                 "light-dark(var(--mantine-color-white), var(--mantine-color-dark-6))",
             }}
+            hiddenFrom="sm"
+          >
+            <Stack gap="md">
+              <Text size="lg" fw={600} ta="center">
+                {t("MobileNotAvailable", "Mobile App Coming Soon")}
+              </Text>
+              <Text size="md" c="dimmed" ta="center">
+                {t(
+                  "MobileNotAvailableMessage",
+                  "The Bondery app is not yet available on mobile devices. Please visit us on a desktop or laptop computer to get started.",
+                )}
+              </Text>
+            </Stack>
+          </Paper>
+
+          {/* Desktop Login Card */}
+          <Paper
+            withBorder
+            shadow="lg"
+            p="xl"
+            radius="lg"
+            w="100%"
+            style={{
+              backgroundColor:
+                "light-dark(var(--mantine-color-white), var(--mantine-color-dark-6))",
+            }}
+            visibleFrom="sm"
           >
             <Stack gap="md">
               <Text size="md" c="dimmed" ta="center">

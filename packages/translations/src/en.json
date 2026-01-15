@@ -14,7 +14,9 @@
     "TermsText": "By continuing, you agree to our <termsLink>Terms of Service</termsLink> and <privacyLink>Privacy Policy</privacyLink>.",
     "AuthenticationError": "Authentication Error",
     "UnexpectedError": "Unexpected Error",
-    "UnexpectedErrorMessage": "An unexpected error occurred"
+    "UnexpectedErrorMessage": "An unexpected error occurred",
+    "MobileNotAvailable": "Mobile App Coming Soon",
+    "MobileNotAvailableMessage": "The Bondery app is not yet available on mobile devices. Please visit us on a desktop or laptop computer to get started."
   },
   "SettingsPage": {
     "Title": "Settings",
