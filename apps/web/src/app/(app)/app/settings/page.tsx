@@ -1,10 +1,8 @@
 import { Container, Title, Stack, Group } from "@mantine/core";
 import { IconSettings } from "@tabler/icons-react";
-import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { ProfileCard } from "./components/ProfileCard";
 import { DataManagementCard } from "./components/DataManagementCard";
-import { cookies } from "next/headers";
 import { getBaseUrl } from "@/lib/config";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { getAuthHeaders } from "@/lib/authHeaders";

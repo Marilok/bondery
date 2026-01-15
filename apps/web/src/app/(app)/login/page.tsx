@@ -78,13 +78,10 @@ export default function LoginPage() {
           >
             <Stack gap="md">
               <Text size="lg" fw={600} ta="center">
-                {t("MobileNotAvailable", "Mobile App Coming Soon")}
+                {t("MobileNotAvailable")}
               </Text>
               <Text size="md" c="dimmed" ta="center">
-                {t(
-                  "MobileNotAvailableMessage",
-                  "The Bondery app is not yet available on mobile devices. Please visit us on a desktop or laptop computer to get started.",
-                )}
+                {t("MobileNotAvailableMessage")}
               </Text>
             </Stack>
           </Paper>
