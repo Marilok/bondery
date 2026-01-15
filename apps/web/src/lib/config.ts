@@ -68,3 +68,8 @@ export const INTEGRATION_PROVIDERS = [
     active: true,
   },
 ] as const;
+
+/**
+ * Status page URL
+ */
+export const STATUS_URL = "https://bondery.openstatus.dev/";
