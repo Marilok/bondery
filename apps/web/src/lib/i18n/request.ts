@@ -1,5 +1,6 @@
 import { getRequestConfig } from "next-intl/server";
 import { cookies } from "next/headers";
+import * as translations from "@bondery/translations";
 
 export default getRequestConfig(async () => {
   const store = await cookies();
@@ -7,6 +8,6 @@ export default getRequestConfig(async () => {
 
   return {
     locale,
-    messages: (await import(`@bondery/translations/${locale}`)).default,
+    messages: translations[locale as keyof typeof translations] || translations.en,
   };
 });
