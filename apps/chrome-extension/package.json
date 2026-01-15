@@ -15,9 +15,6 @@
     "check-types": "tsc --noEmit",
     "lint": "eslint src"
   },
-  "dependencies": {
-    "@bondery/helpers": "*"
-  },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
