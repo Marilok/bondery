@@ -128,7 +128,9 @@ async function start() {
 
   try {
     await server.listen({ port: server.config.PORT, host: server.config.HOST });
-    console.log(`🚀 Bondery API Server running at http://${server.config.HOST}:${server.config.PORT}`);
+    console.log(
+      `🚀 Bondery API Server running at http://${server.config.HOST}:${server.config.PORT}`,
+    );
   } catch (err) {
     server.log.error(err);
     process.exit(1);

@@ -27,7 +27,12 @@ function getSupabaseConfig() {
   const SUPABASE_URL = SUPABASE_URL_RAW.replace(/\/rest\/v1\/?$/, "");
 
   if (SUPABASE_URL !== SUPABASE_URL_RAW) {
-    console.log("[getSupabaseConfig] Normalized SUPABASE_URL from", SUPABASE_URL_RAW, "to", SUPABASE_URL);
+    console.log(
+      "[getSupabaseConfig] Normalized SUPABASE_URL from",
+      SUPABASE_URL_RAW,
+      "to",
+      SUPABASE_URL,
+    );
   }
 
   return { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_KEY };
@@ -58,14 +63,14 @@ export function createAdminClient(): SupabaseClient<Database> {
  */
 function parseCookieHeader(cookieHeader: string): Record<string, string> {
   const cookies: Record<string, string> = {};
-  
-  cookieHeader.split(';').forEach(cookie => {
-    const [name, ...rest] = cookie.trim().split('=');
+
+  cookieHeader.split(";").forEach((cookie) => {
+    const [name, ...rest] = cookie.trim().split("=");
     if (name && rest.length > 0) {
-      cookies[name] = rest.join('=');
+      cookies[name] = rest.join("=");
     }
   });
-  
+
   return cookies;
 }
 
@@ -75,7 +80,7 @@ function parseCookieHeader(cookieHeader: string): Record<string, string> {
 function combineChunkedCookies(cookies: Record<string, string>): Record<string, string> {
   const combined: Record<string, string> = {};
   const chunks: Record<string, string[]> = {};
-  
+
   // Group cookies by base name
   for (const [key, value] of Object.entries(cookies)) {
     const match = key.match(/^(.+)\.(\d+)$/);
@@ -90,12 +95,12 @@ function combineChunkedCookies(cookies: Record<string, string>): Record<string, 
       combined[key] = value;
     }
   }
-  
+
   // Combine chunks in order
   for (const [baseName, chunkArray] of Object.entries(chunks)) {
-    combined[baseName] = chunkArray.filter(Boolean).join('');
+    combined[baseName] = chunkArray.filter(Boolean).join("");
   }
-  
+
   return combined;
 }
 
@@ -119,16 +124,16 @@ function getAuthTokensFromCookies(request: FastifyRequest): {
 
   // First try Fastify's parsed cookies (from browser requests)
   let cookies = request.cookies || {};
-  
+
   // If no cookies parsed, try to parse from Cookie header (from server-to-server requests)
   if (Object.keys(cookies).length === 0 && request.headers.cookie) {
     console.log("[getAuthTokensFromCookies] Manually parsing Cookie header");
     cookies = parseCookieHeader(request.headers.cookie);
   }
-  
+
   // Combine chunked cookies
   cookies = combineChunkedCookies(cookies);
-  
+
   console.log("[getAuthTokensFromCookies] Combined cookie keys:", Object.keys(cookies));
   console.log("[getAuthTokensFromCookies] Using projectRef:", projectRef);
 
@@ -143,7 +148,10 @@ function getAuthTokensFromCookies(request: FastifyRequest): {
 
     if (value) {
       console.log(`[getAuthTokensFromCookies] Found auth cookie: ${key}`);
-      console.log(`[getAuthTokensFromCookies] Cookie value (first 100 chars):`, value.substring(0, 100));
+      console.log(
+        `[getAuthTokensFromCookies] Cookie value (first 100 chars):`,
+        value.substring(0, 100),
+      );
 
       // Supabase sets base64-prefixed JSON strings for auth cookies
       const decodedValue = value.startsWith("base64-")
@@ -153,7 +161,10 @@ function getAuthTokensFromCookies(request: FastifyRequest): {
       try {
         // The cookie might be a JSON object with access_token and refresh_token
         const parsed = JSON.parse(decodedValue);
-        console.log("[getAuthTokensFromCookies] Successfully parsed JSON, keys:", Object.keys(parsed));
+        console.log(
+          "[getAuthTokensFromCookies] Successfully parsed JSON, keys:",
+          Object.keys(parsed),
+        );
         if (parsed.access_token) {
           accessToken = parsed.access_token;
           console.log("[getAuthTokensFromCookies] Found access_token in parsed JSON");
@@ -178,7 +189,12 @@ function getAuthTokensFromCookies(request: FastifyRequest): {
     console.log("[getAuthTokensFromCookies] Found Bearer token in Authorization header");
   }
 
-  console.log("[getAuthTokensFromCookies] Result - accessToken:", !!accessToken, "refreshToken:", !!refreshToken);
+  console.log(
+    "[getAuthTokensFromCookies] Result - accessToken:",
+    !!accessToken,
+    "refreshToken:",
+    !!refreshToken,
+  );
   return { accessToken, refreshToken };
 }
 
