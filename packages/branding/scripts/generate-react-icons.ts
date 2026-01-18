@@ -17,29 +17,34 @@ const svgFiles = [
     input: "src/assets/logotype-black.svg",
     output: "src/react/BonderyLogotypeBlack.tsx",
     componentName: "BonderyLogotypeBlack",
+    staticId: true,
   },
   {
     input: "src/assets/logotype-white.svg",
     output: "src/react/BonderyLogotypeWhite.tsx",
     componentName: "BonderyLogotypeWhite",
+    staticId: true,
   },
 ];
 
 // Custom template that injects a unique ID to prevent collisions when multiple instances are rendered
 const template = (variables: any, { tpl }: any) => {
+  const isLogotype = variables.componentName.startsWith("BonderyLogotype");
   return tpl`
 ${variables.imports};
 
-${variables.interfaces};
+import type { SVGProps } from "react";
 
-const ${variables.componentName} = (${variables.props}) => {
-  const uniqueId = React.useId().replace(/:/g, "");
+interface ${variables.componentName}Props extends SVGProps<SVGSVGElement> {}
+
+const ${variables.componentName} = (props: ${variables.componentName}Props) => {
+  ${isLogotype ? "const uniqueId = `paint0_linear_12_150-${Math.random().toString(36).substr(2, 9)}-${Date.now()}`;" : ""}
 
   return (
     ${variables.jsx}
   );
 };
- 
+
 ${variables.exports};
 `;
 };
@@ -82,12 +87,15 @@ async function generateReactIcons() {
       });
 
       if (hasIds) {
-        // Replace static IDs with dynamic ones using the injected uniqueId
-        // 1. Replace id definitions: id="value" -> id={`value-${uniqueId}`}
-        jsCode = jsCode.replace(/id="([^"]+)"/g, "id={`$1-${uniqueId}`}");
-
-        // 2. Replace url references: ="url(#value)" -> ={`url(#value-${uniqueId})`}
-        jsCode = jsCode.replace(/="url\(#([^)]+)\)"/g, "={`url(#$1-${uniqueId})`}");
+        if (file.staticId) {
+          // For logotype components, use static id 'paint0_linear_12_150'
+          jsCode = jsCode.replace(/id="([^"]+)"/g, "id={'paint0_linear_12_150'}");
+          jsCode = jsCode.replace(/="url\(#([^)]+)\)"/g, "={'url(#paint0_linear_12_150)'}");
+        } else {
+          // Replace static IDs with dynamic ones using the injected uniqueId
+          jsCode = jsCode.replace(/id="([^"]+)"/g, "id={`$1-${uniqueId}`}");
+          jsCode = jsCode.replace(/="url\(#([^)]+)\)"/g, "={`url(#$1-${uniqueId})`}");
+        }
       }
 
       writeFileSync(outputPath, jsCode);

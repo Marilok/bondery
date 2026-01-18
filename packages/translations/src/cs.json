@@ -15,8 +15,13 @@
   "LoginPage": {
     "Title": "Bondery",
     "Description": "Přihlásíme vás nebo vytvoříme nový účet, pokud jej ještě nemáte.",
+    "SignIn": "Přihlášení",
     "ContinueWith": "Pokračovat s {provider}",
     "TermsText": "Pokračováním souhlasíte s našimi <termsLink>Podmínkami služby</termsLink> a <privacyLink>Zásadami ochrany osobních údajů</privacyLink>.",
+    "TermsAgreement": "Pokračováním souhlasíte s našimi",
+    "TermsOfService": "Podmínkami služby",
+    "And": "a",
+    "PrivacyPolicy": "Zásadami ochrany osobních údajů",
     "AuthenticationError": "Chyba ověření",
     "UnexpectedError": "Neočekávaná chyba",
     "UnexpectedErrorMessage": "Došlo k neočekávané chybě",

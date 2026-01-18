@@ -15,8 +15,13 @@
   "LoginPage": {
     "Title": "Bondery",
     "Description": "We'll log you in or create a new account if you don't have one yet.",
+    "SignIn": "Sign In",
     "ContinueWith": "Continue with {provider}",
     "TermsText": "By continuing, you agree to our <termsLink>Terms of Service</termsLink> and <privacyLink>Privacy Policy</privacyLink>.",
+    "TermsAgreement": "By continuing, you agree to our",
+    "TermsOfService": "Terms of Service",
+    "And": "and",
+    "PrivacyPolicy": "Privacy Policy",
     "AuthenticationError": "Authentication Error",
     "UnexpectedError": "Unexpected Error",
     "UnexpectedErrorMessage": "An unexpected error occurred",
